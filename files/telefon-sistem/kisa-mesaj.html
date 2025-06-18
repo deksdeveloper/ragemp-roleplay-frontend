@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Input Dialogu</title>
+    <meta name="description" content="Input Dialog Tasarımı">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .dialog-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dialog-container {
+            width: 450px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .dialog-overlay.visible .dialog-container {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .dialog-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .dialog-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .dialog-header h2 {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .dialog-content {
+            padding: 20px;
+            color: #ddd;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .dialog-content p {
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .dialog-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .dialog-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(52, 152, 219, 0.5);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .dialog-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
+        }
+
+        .dialog-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease;
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .dialog-textarea:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(52, 152, 219, 0.5);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .dialog-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
+        }
+
+        .dialog-textarea::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .dialog-textarea::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dialog-textarea::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .character-counter {
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .character-counter.warning {
+            color: #f39c12;
+        }
+
+        .character-counter.error {
+            color: #e74c3c;
+        }
+
+        .dialog-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(17, 17, 17, 0.98);
+            border-top: 1px solid #222;
+        }
+
+        .dialog-button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 120px;
+        }
+
+        .dialog-button-primary {
+            background: #2980b9;
+        }
+
+        .dialog-button-primary:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .dialog-button-primary:disabled {
+            background: #444;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .dialog-button-secondary {
+            background: #505050;
+        }
+
+        .dialog-button-secondary:hover {
+            background: #606060;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(80, 80, 80, 0.3);
+        }
+
+        .dialog-button:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 768px) {
+            .dialog-container {
+                width: 85%;
+                max-width: 400px;
+            }
+        }
+
+        .demo-button {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            background: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+        }
+
+        .demo-button:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dialog-overlay" id="dialog-overlay">
+        <div class="dialog-container">
+            <div class="dialog-header">
+                <h2 id="dialog-title">Metin Girin</h2>
+            </div>
+            <div class="dialog-content" id="dialog-content">
+                <p id="dialog-message">Lütfen bilgileri girin:</p>
+                <div class="input-container" id="input-container">
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="dialog-button dialog-button-primary" id="dialog-button1">Onayla</button>
+                <button class="dialog-button dialog-button-secondary" id="dialog-button2">İptal</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+        let inputValue = null;
+        let maxLength = null;
+      
+        function showInputDialog(title, message, inputType, placeholder, button1Text, button2Text, defaultValue, characterLimit) {
+            $('#dialog-title').text(title || 'Metin Girin');
+            $('#dialog-message').text(message || 'Lütfen bilgileri girin:');
+            $('#dialog-button1').text(button1Text || 'Onayla');
+            $('#dialog-button2').text(button2Text || 'İptal');
+            
+            maxLength = characterLimit || null;
+            
+            const $inputContainer = $('#input-container');
+            $inputContainer.empty();
+            
+            let inputElement;
+            let maxLengthAttr = maxLength ? `maxlength="${maxLength}"` : '';
+            
+            if (inputType === 'textarea') {
+                inputElement = `<textarea class="dialog-textarea" id="dialog-input" placeholder="${placeholder}" ${maxLengthAttr}>${defaultValue || ''}</textarea>`;
+            } else {
+                const type = inputType || 'text';
+                inputElement = `<input type="${type}" class="dialog-input" id="dialog-input" placeholder="${placeholder}" value="${defaultValue || ''}" ${maxLengthAttr}>`;
+            }
+            
+            $inputContainer.append(inputElement);
+            
+            if (maxLength) {
+                $inputContainer.append(`<div class="character-counter" id="character-counter">0/${maxLength}</div>`);
+            }
+            
+            $('#dialog-overlay').addClass('visible');
+            
+            setTimeout(() => {
+                $('#dialog-input').focus();
+                if (defaultValue) {
+                    $('#dialog-input')[0].setSelectionRange(0, defaultValue.length);
+                }
+                updateCharacterCounter();
+            }, 100);
+            
+            $('#dialog-input').off('input').on('input', function() {
+                if (maxLength && inputType === 'text') {
+                    let value = $(this).val();
+                    value = value.replace(/[^0-9]/g, '');
+                    $(this).val(value);
+                }
+                updateCharacterCounter();
+                validateInput();
+            });
+            
+            $('#dialog-input').off('keydown').on('keydown', function(e) {
+                if (maxLength && inputType === 'text') {
+                    if (!(
+                        (e.keyCode >= 48 && e.keyCode <= 57) || // 0-9 rakamları
+                        (e.keyCode >= 96 && e.keyCode <= 105) || // Numpad 0-9
+                        e.keyCode === 8 ||  // Backspace
+                        e.keyCode === 46 || // Delete
+                        e.keyCode === 9 ||  // Tab
+                        e.keyCode === 27 || // Escape
+                        e.keyCode === 13 || // Enter
+                        (e.keyCode >= 37 && e.keyCode <= 40)
+                    )) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+                
+                if (e.keyCode === 13 && inputType !== 'textarea') {
+                    e.preventDefault();
+                    confirmInput();
+                }
+            });
+            
+            $('#dialog-button1').off('click').on('click', function() {
+                confirmInput();
+            });
+            
+            $('#dialog-button2').off('click').on('click', function() {
+                mp.trigger("client:KisaMesajBirinci", false, "");
+                closeDialog();
+            });
+            
+            $(document).on('keydown.dialog', function(e) {
+                if (e.keyCode === 27) {
+                    closeDialog();
+                }
+            });            
+        }
+        
+        function updateCharacterCounter() {
+            if (!maxLength) return;
+            
+            const currentLength = $('#dialog-input').val().length;
+            const $counter = $('#character-counter');
+            
+            $counter.text(`${currentLength}/${maxLength}`);
+            
+            $counter.removeClass('warning error');
+            if (currentLength >= maxLength) {
+                $counter.addClass('error');
+            } else if (currentLength >= maxLength * 0.8) {
+                $counter.addClass('warning');
+            }
+        }
+        
+        function validateInput() {
+            const inputValue = $('#dialog-input').val();
+            const $button = $('#dialog-button1');
+            
+            if (maxLength && inputValue.length > maxLength) {
+                $button.prop('disabled', true);
+            } else {
+                $button.prop('disabled', false);
+            }
+        }
+        
+        function confirmInput() {
+            inputValue = $('#dialog-input').val();
+            
+            if (inputValue === null || inputValue.trim === '') {
+                shakeInput();
+                return;
+            }
+            
+            if (maxLength && inputValue.length > maxLength) {
+                shakeInput();
+                return;
+            }
+            
+            mp.trigger("client:KisaMesajBirinci", true, inputValue);
+            closeDialog();
+        }
+        
+        function shakeInput() {
+            $('#dialog-input').css('animation', 'shake 0.5s');
+            setTimeout(() => {
+                $('#dialog-input').css('animation', '');
+            }, 500);
+        }
+        
+        function closeDialog() {
+            $('#dialog-overlay').removeClass('visible');
+            $(document).off('keydown.dialog');
+            inputValue = null;
+            maxLength = null;
+            mp.trigger("client:KisaMesajKapat");
+        }
+
+        function showKisaMesajDialog() {
+            showInputDialog(
+                "Kısa Mesaj Yolla", 
+                "» Lütfen kısa mesaj yollamak istediğiniz numarayı girin:", 
+                "text", 
+                "", 
+                "İleri", 
+                "Geri", 
+                "", 
+                8
+            );
+        }
+    </script>
+</body>
+</html>
