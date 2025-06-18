@@ -1,0 +1,495 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/scrollbar.css"/>
+    <link rel="stylesheet" href="../css/catalog.css">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Inter', sans-serif; 
+			color: #fff;
+			display: flex;
+			user-select: none;
+		}
+	</style>
+</head>
+<body style="background-color: transparent;">
+<div class="container-fluid">
+
+    <div class="row">
+
+
+        <div class="col-md-2"></div>
+
+        <div class="col-md-8">
+            <div class="card bg-dark text-white" style="top:15%;">
+                <div class="card-header">Birlik
+                    <button type="button" class="btn btn-sm card-close-button" onclick="closeFactions();">X
+                    </button>
+                </div>
+                <div class="card-body">
+
+                    <!-- Nav tabs -->
+					    
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#stats">Başvurular</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#clothes">Üyeler</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#settings">Ayarlar & Bilgiler</a>
+						</li>
+					</ul>
+					
+					
+					<div class="tab-content">
+					
+					
+						<div id="stats" class="tab-pane container active ">
+					
+							<div class="row">
+								<div class="col-md-12">
+								
+									<div class="table-responsive factions-scroll">
+									<table class="table table-condensed table-sm">
+										<thead>
+										<tr>
+										  <th scope="col">İsim</th>
+										  <th scope="col">Seviye</th>
+										  <th scope="col">Telefon</th>
+										  <th scope="col" colspan="2" class="text-center">İşlem</th>
+										</tr>
+									  </thead>
+										<tbody id="requests">
+											
+										</tbody>
+									</table>
+									</div>
+					
+								</div>
+					
+							</div>
+					
+						</div>
+					
+						<div id="clothes" class="tab-pane container fade ">
+					
+							 <div class="row">
+								<div class="col-md-12">
+								
+								<div class="table-responsive factions-scroll">
+									<table class="table table-condensed table-sm">
+										<thead>
+										<tr>
+										  <th scope="col">İsim</th>
+										  <th scope="col">Rütbe</th>
+					
+										  <th scope="col"  class="text-right">İşlem</th>
+										</tr>
+									  </thead>
+										<tbody id="members">
+					
+										  
+										</tbody>
+									</table>
+								</div>
+					
+								</div>
+								
+							</div>
+							
+					
+						</div>
+					
+                    
+						
+						
+						<div id="settings" class="tab-pane container fade ">
+
+                             <div class="row factions-scroll">
+
+								
+								<div class="col-md-6">
+									<h3>Birlik Bilgileri</h3>
+									<div class="table-responsive">
+										<table class="table table-condensed table-sm">
+											<tbody>
+												<tr>
+													<td><strong>Birlik Adı</strong></td>
+													<td id="factionName" class="text-warning">Yok</td>
+												</tr>
+												<tr>
+													<td><strong>Üyeler</strong></td>
+													<td id="factionMembers" class="text-warning">34</td>
+												</tr>
+												<tr>
+													<td><strong>Tür</strong></td>
+													<td id="factionType" class="text-warning">Kriminal Organizasyon</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								
+									<h3>Ayarlar</h3>
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Birlik Mesajı</span>
+										</div>    
+										<input type="text" class="form-control" value="Yok" id="fname">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="savefname">Kaydet</button>
+										</div>
+									</div>
+									
+									<button type="button" class="btn btn-sm btn-block ">Birliği Sil</button>
+								
+								</div>  
+								
+								<div class="col-md-6">
+									<h3>Rütbe Ayarları</h3>
+									
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 1</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 1" id="rank1">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save1">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 2</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 2" id="rank2">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save2">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 3</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 3" id="rank3">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save3">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 4</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 4" id="rank4">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save4">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 5</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 5" id="rank5">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save5">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 6</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 6" id="rank6">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save6">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 7</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 7" id="rank7">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save7">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 8</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 8" id="rank8">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save8">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 9</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 9" id="rank9">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save9">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 10</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 10" id="rank10">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save10">Kaydet</button>
+										</div>
+									</div>
+								
+									<div class="input-group mb-1">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Rütbe 11</span>
+										</div>    
+										<input type="text" class="form-control" value="Rütbe 11" id="rank11">
+										
+										<div class="input-group-append">
+											<button class="btn btn-sm btn-primary d-none" id="save11">Kaydet</button>
+										</div>
+									</div>
+								</div>
+								
+							
+
+                        </div>
+						
+						
+
+					
+				  </div>
+				  
+				  
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="col-md-2"></div>
+
+
+    </div>
+
+
+
+
+
+
+	<!-- The Modal -->
+    <div class="modal" id="myModal">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+	
+				<!-- Modal Başlık -->
+				<div class="modal-header">
+					<h4 class="modal-title">Birlik Oluşturma</h4>
+					<button type="button" class="close btn btn-sm" data-dismiss="modal">&times;</button>
+				</div>
+	
+				<!-- Modal İçeriği -->
+				<div class="modal-body">
+	
+					<div class="form-group">
+						<label for="factionname">Birlik Adı</label>
+						<input type="text" class="form-control" id="factionname">
+					</div>
+	
+					<div class="form-group">
+						<label>Kategori</label><br>
+						<input type="radio" name="factiontype" value="5"> Çete<br>
+						<input type="radio" name="factiontype" value="6"> Mafya<br>
+					</div>
+	
+				</div>
+	
+				<!-- Modal Alt Bilgisi -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal" id="factioncreate">Birlik Oluştur</button>
+				</div>
+	
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	<!-- Modal -->
+	<div class="modal fade" id="RankModal" role="dialog">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+		
+		  <!-- Modal içerik-->
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			  <h4 class="modal-title">Rütbe Değiştir</h4>
+			</div>
+			<div class="modal-body">
+			  
+			  
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="1"> <span id="setrank1">Rütbe 1</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="2"> <span id="setrank2">Rütbe 2</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="3"> <span id="setrank3">Rütbe 3</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="4"> <span id="setrank4">Rütbe 4</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="5"> <span id="setrank5">Rütbe 5</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="6"> <span id="setrank6">Rütbe 6</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="7"> <span id="setrank7">Rütbe 7</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="8"> <span id="setrank8">Rütbe 8</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="9"> <span id="setrank9">Rütbe 9</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="10"> <span id="setrank10">Rütbe 10</span></label>
+			  </div>
+			  <div class="radio">
+				<label><input type="radio" name="optradio" value="11"> <span id="setrank11">Rütbe 11</span></label>
+			  </div>
+	
+			
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-success" data-dismiss="modal" id="saverank">Kaydet</button>
+			</div>
+		  </div>
+		  
+		</div>
+	</div>
+	
+		  
+		  
+		  
+		  
+		  
+		  <!-- Modal -->
+		  <div id="newMethModal" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered">
+		  
+			  <!-- Modal içerik-->
+			  <div class="modal-content">
+				<!-- Modal Başlık -->
+				<div class="modal-header">
+				  <h4 class="modal-title">Meth Laboratuvarı Satın Al</h4>
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				  
+				<div class="modal-body">
+				  <p>Lütfen laboratuvarın olacağı yeri belirleyin!</p>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-danger" data-dismiss="modal" id="newmethlab">SATIN AL & YERLEŞTİR</button>
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+				</div>
+			  </div>
+		  
+			</div>
+		  </div>
+		  
+		  
+		  <!-- Modal -->
+		  <div id="newCocaineModal" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered">
+		  
+			  <!-- Modal içerik-->
+			  <div class="modal-content">
+				<!-- Modal Başlık -->
+				<div class="modal-header">
+				  <h4 class="modal-title">Kokain Laboratuvarı Satın Al</h4>
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+				  <p>Lütfen laboratuvarın olacağı yeri belirleyin!</p>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-danger" data-dismiss="modal" id="newcocainelab">SATIN AL & YERLEŞTİR</button>
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+				</div>
+			  </div>
+		  
+			</div>
+		  </div>
+		  
+		
+		
+		<!-- Modal -->
+		<div id="changeLabLocation" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-dialog-centered">
+		  
+			  <!-- Modal içerik-->
+			  <div class="modal-content">
+				<!-- Modal Başlık -->
+				<div class="modal-header">
+				  <h4 class="modal-title">Laboratuvar Lokasyonunu Değiştir</h4>
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+				  <p>Lütfen laboratuvarın olacağı yeri belirleyin!</p>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-danger" data-dismiss="modal" id="changelabloc">Değiştir</button>
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Çıkış</button>
+				</div>
+			  </div>
+		  
+			</div>
+		  </div>
+		  
+		  
+	
+
+</div>
+
+</body>
+
+<script src="../css/jquery.js"></script>
+<script src="../css/bootstrap.js"></script>
+<script src="factions.js"></script>
+</html>

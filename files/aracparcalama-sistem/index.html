@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Özel Dialog</title>
+    <meta name="description" content="Özel Dialog Tasarımı">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Dialog Overlay */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .dialog-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Dialog Container */
+        .dialog-container {
+            width: 450px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .dialog-overlay.visible .dialog-container {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Dialog Header */
+        .dialog-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .dialog-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .dialog-header h2 {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Dialog Content */
+        .dialog-content {
+            padding: 20px;
+            color: #ddd;
+            font-size: 14px;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .dialog-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .dialog-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dialog-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Dialog Footer */
+        .dialog-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(17, 17, 17, 0.98);
+            border-top: 1px solid #222;
+        }
+
+        /* Dialog Buttons */
+        .dialog-button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 120px;
+        }
+
+        .dialog-button-primary {
+            background: #2980b9;
+        }
+
+        .dialog-button-primary:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .dialog-button-secondary {
+            background: #505050;
+        }
+
+        .dialog-button-secondary:hover {
+            background: #606060;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(80, 80, 80, 0.3);
+        }
+
+        .dialog-button:active {
+            transform: translateY(0);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dialog-container {
+                width: 85%;
+                max-width: 400px;
+            }
+        }
+
+        /* Demo Buttons (for testing) */
+        .demo-button {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            background: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+        }
+
+        .demo-button:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dialog-overlay" id="dialog-overlay">
+        <div class="dialog-container">
+            <div class="dialog-header">
+                <h2 id="dialog-title">Başlık</h2>
+            </div>
+            <div class="dialog-content" id="dialog-content">
+                İçerik
+            </div>
+            <div class="dialog-footer">
+                <button class="dialog-button dialog-button-primary" id="dialog-button1">Buton 1</button>
+                <button class="dialog-button dialog-button-secondary" id="dialog-button2">Buton 2</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+       
+        function showDialog(title, content, button1Text, button2Text) {
+            $('#dialog-title').text(title || 'Bilgilendirme');
+            $('#dialog-content').html(content || '');
+            $('#dialog-button1').text(button1Text || 'Tamam');
+            $('#dialog-button2').text(button2Text || 'İptal');
+            
+            $('#dialog-overlay').addClass('visible');
+            
+            $('#dialog-button1').off('click').on('click', function() {
+                mp.trigger("client:ParcalamaSecildi", true);
+                closeDialog();
+            });
+            
+            $('#dialog-button2').off('click').on('click', function() {
+                mp.trigger("client:ParcalamaSecildi", false);
+                closeDialog();
+            });
+            
+            $(document).on('keydown.dialog', function(e) {
+                if (e.keyCode === 27) {
+                    closeDialog();
+                }
+            });
+        }
+        
+        function closeDialog() {
+            $('#dialog-overlay').removeClass('visible');
+            
+            $(document).off('keydown.dialog');
+            
+            mp.trigger("client:ParcalamaKapat");
+        }
+        
+        $(document).ready(function() {
+            $('#dialog-overlay').on('click', function(e) {
+                if (e.target === this) {
+                    closeDialog();
+                }
+            });
+        });
+
+        function showParcalamaDialog(model)
+        {
+            showDialog("PARÇALAMA ONAY", `${model} model aracı  parçalamak istiyor musun? Ücret araç parçalanınca belirlenecek.`, "Evet", "Hayır");
+        }
+    </script>
+</body>
+</html>

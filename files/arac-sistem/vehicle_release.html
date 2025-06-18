@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Araç Teslim Alma</title>
+    <meta name="description" content="Araç Teslim Alma Menüsü">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .panel-container {
+            width: 500px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .vehicles-container {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .vehicles-container::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .vehicles-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .vehicles-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .vehicle-item {
+            margin-bottom: 15px;
+            position: relative;
+            background: #151515;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.3s ease forwards;
+            transition: all 0.2s ease;
+        }
+
+        .vehicle-item:hover {
+            border-color: #222;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+        }
+
+        .vehicle-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vehicle-name {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .vehicle-price {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            background: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        .empty-message {
+            color: #888;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 14px;
+        }
+
+		.exit {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 10;
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .exit:hover {
+            background-color: #c0392b;
+        }
+
+        .exit a {
+            margin-right: 5px;
+            font-weight: bold;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .vehicle-item:nth-child(1) { animation-delay: 0.05s; }
+        .vehicle-item:nth-child(2) { animation-delay: 0.1s; }
+        .vehicle-item:nth-child(3) { animation-delay: 0.15s; }
+        .vehicle-item:nth-child(4) { animation-delay: 0.2s; }
+        .vehicle-item:nth-child(5) { animation-delay: 0.25s; }
+
+        @media (max-width: 768px) {
+            .panel-container {
+                width: 85%;
+                max-width: 450px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+	
+    <div class="panel-container">
+		<div id="close" class="exit">
+			X
+		</div>
+        <div class="panel-header">
+            <h2>Araç Teslim Alma</h2>
+            <p>Geri almak istediğiniz aracı seçin</p>
+        </div>
+        
+        <div class="vehicles-container" id="release_vehicle_list">
+        </div>
+        
+    </div>
+
+    <script src="../envanter-sistem/js/jquery.js"></script>
+    <script src="../envanter-sistem/js/semantic.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#close").click(function() {
+                mp.trigger("Destroy_Character_Menu");
+            });
+        });
+        
+        function LoadPlayerVehiclesToRelease(vehicle_list) {
+            vehicles_count = 0;
+            $("#release_vehicle_list").empty();
+            veh_list = JSON.parse(vehicle_list);
+            
+            if(veh_list.length <= 0) {
+                $('#release_vehicle_list').append('<div class="empty-message">Teslim alınabilecek araç bulunamadı</div>');
+            } else {
+                for(let i = 0; i < veh_list.length; i++) {
+                    $('#release_vehicle_list').append(`
+                        <div class="vehicle-item">
+                            <div class="vehicle-info">
+                                <span class="vehicle-name">${veh_list[i].Model}</span>
+                                <span class="vehicle-price">$${veh_list[i].Price}</span>
+                            </div>
+                            <button id="release_${veh_list[i].Index}" class="button">Geri Al</button>
+                        </div>
+                    `);
+                    
+                    $(`#release_${veh_list[i].Index}`).click(function() {
+                        mp.trigger("Player_Vehicle_Release", veh_list[i].Index, veh_list[i].Price);
+                    });
+                    vehicles_count++;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

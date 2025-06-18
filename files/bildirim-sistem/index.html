@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+        body{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+            padding-bottom: 30px;
+        }
+        .toast-container {
+            position: absolute;
+            bottom: 50px; /* Hafif yukarıya çıkarttık */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column-reverse;
+            max-width: 400px;
+            width: 100%;
+        }
+        .toast {
+            position: relative;
+            margin: 8px 0;
+            border-radius: 8px; /* Kenarları biraz daha yuvarlattık */
+            background: #333; /* Koyu arka plan */
+            padding: 10px 15px 10px 15px; /* Boyutları küçülttük */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transform: translateX(calc(100% + 30px));
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+        .toast.active {
+            transform: translateX(0%);
+        }
+        .toast.fade-out {
+            opacity: 0;
+            transform: translateX(calc(-100% - 30px));
+        }
+        .toast-content {
+            display: flex;
+            align-items: center;
+        }
+        .toast-content .check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 25px; /* Küçük icon */
+            width: 25px; /* Küçük icon */
+            color: #fff;
+            font-size: 14px; /* Küçük font */
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .toast-content .message {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .message .text {
+            font-size: 14px; /* Küçük yazı */
+            font-weight: 400;
+            color: #fff; /* Mesaj rengi beyaz */
+            word-wrap: break-word;
+        }
+        .toast .close {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            padding: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        .toast .close:hover {
+            opacity: 1;
+        }
+        .toast .progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background: #ddd;
+        }
+        .toast .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            transition: width 0s linear;
+        }
+
+        .toast.success {
+            border-left: 6px solid #28a745;
+        }
+        .toast.success .check {
+            background-color: #28a745;
+        }
+        .toast.success .progress-bar {
+            background-color: #28a745;
+        }
+        .toast.error {
+            border-left: 6px solid #dc3545;
+        }
+        .toast.error .check {
+            background-color: #dc3545;
+        }
+        .toast.error .progress-bar {
+            background-color: #dc3545;
+        }
+        .toast.info {
+            border-left: 6px solid #17a2b8;
+        }
+        .toast.info .check {
+            background-color: #17a2b8;
+        }
+        .toast.info .progress-bar {
+            background-color: #17a2b8;
+        }
+    </style>
+    <title>Toast Notification with Progress Bar</title>
+</head>
+<body>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        const toastContainer = document.getElementById("toast-container");
+
+        function showToast(type, message, duration) {
+            const toast = document.createElement("div");
+            toast.classList.add("toast", type);
+
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-times' : 'fa-info'} check"></i>
+                    <div class="message">
+                        <span class="text">${message}</span>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar"></div>
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            const progressBar = toast.querySelector(".progress-bar");
+
+            progressBar.style.width = "0%";
+
+            setTimeout(() => {
+                toast.classList.add("active");
+            }, 10);
+
+            setTimeout(() => {
+                progressBar.style.transition = `width ${duration}ms linear`;
+                progressBar.style.width = "100%";
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add("fade-out");
+            }, duration - 500);
+
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, duration);
+
+            const closeIcon = toast.querySelector(".close");
+            if (closeIcon) {
+                closeIcon.addEventListener("click", () => {
+                    toast.classList.add("fade-out");
+                    setTimeout(() => {
+                        toastContainer.removeChild(toast);
+                    }, 300);
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>

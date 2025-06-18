@@ -1,0 +1,484 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Birlikler Paneli</title>
+    <meta name="description" content="Modernize Edilmiş Birlikler Paneli">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .panel-container {
+            width: 800px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-button:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-content {
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #222;
+            margin-bottom: 20px;
+        }
+
+        .tab-link {
+            padding: 12px 20px;
+            color: #888;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .tab-link.active {
+            color: #fff;
+        }
+
+        .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #3498db;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .table-container {
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #fff;
+        }
+
+        table th {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 12px 15px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #3498db;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+            background: rgba(25, 25, 25, 0.5);
+            vertical-align: middle;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table tr:hover td {
+            background: rgba(30, 30, 30, 0.8);
+        }
+
+        .button {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            background: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-dialog {
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .modal-content {
+            background: rgba(15, 15, 15, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: rgba(20, 20, 20, 0.98);
+            padding: 15px;
+            border-bottom: 1px solid #222;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .modal-header h4 {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .modal-header .close {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-header .close:hover {
+            color: #fff;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px;
+            border-top: 1px solid #222;
+            text-align: right;
+        }
+
+        .input-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-container input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            background: #151515;
+            border: 1px solid #222;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .input-container input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .input-container input::placeholder {
+            color: #666;
+        }
+
+        .radio-container {
+            margin-bottom: 15px;
+        }
+
+        .radio-container label {
+            color: #ccc;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .radio-option span {
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body style="background-color: transparent;">
+    <div class="panel-container">
+        <div class="panel-header">
+            <h2>Birlikler</h2>
+            <button type="button" class="close-button" onclick="closeFactions();">X</button>
+        </div>
+        
+        <div class="panel-content">
+            <div class="tabs">
+                <a class="tab-link active" data-tab="legal">Legal</a>
+                <a class="tab-link" data-tab="illegal">İl-Legal</a>
+            </div>
+
+            <div class="tab-content active" id="legal">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>İsim</th>
+                                <th>Tür</th>
+                                <th>Üyeler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orglist">
+                            <!-- Legal birlik listesi buraya gelecek -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="illegal">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>İsim</th>
+                                <th>Tür</th>
+                                <th>Üyeler</th>
+                                <th class="text-right">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ilegallist">
+                            <!-- İllegal birlik listesi buraya gelecek -->
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id="factionCreateButton" class="button">Birlik Kur ($1.000.000)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="factionModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Birlik Kur</h4>
+                    <button type="button" class="close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-container">
+                        <input type="text" id="factionname" placeholder="İsim">
+                    </div>
+                    <div class="radio-container">
+                        <label>Kategori</label>
+                        <div class="radio-option">
+                            <input checked type="radio" name="factiontype" value="7" id="illegal-type">
+                            <span>İl-Legal</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button" id="factioncreate">Kur</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../css/jquery.js"></script>
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab-link').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and related content
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('factionModal');
+        const factionCreateButton = document.getElementById('factionCreateButton');
+        const closeModal = document.getElementById('closeModal');
+        
+        factionCreateButton.addEventListener('click', () => {
+            modal.classList.add('show');
+        });
+        
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+
+        // Faction create functionality
+        document.getElementById('factioncreate').addEventListener('click', () => {
+            // Your faction creation logic here
+            modal.classList.remove('show');
+        });
+
+        // Close factions panel
+        function closeFactions() {
+            mp.trigger('closeFactions');
+        }
+
+        // Connect to original factions.js script functionality
+        // Note: This should be adjusted based on the actual functionality in factions.js
+    </script>
+    <script src="factions.js"></script>
+</body>
+</html>
