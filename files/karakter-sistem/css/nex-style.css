@@ -1,0 +1,300 @@
+﻿
+/* Temel Sıfırlama */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Ana Renkler */
+:root {
+  --primary-color: #e74c3c;
+  --secondary-color: #111;
+  --text-color: #333;
+  --bg-color: #f8f8f8;
+  --input-bg: #f1f1f1;
+  --border-color: #ddd;
+  --success-color: #27ae60;
+  --error-color: #e74c3c;
+}
+
+/* Genel Stiller */
+body {
+  background: linear-gradient(135deg, #141e30, #243b55);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.switch-content {
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ana Container */
+.gta-acount {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.gta-acount__content {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sağ Bölüm */
+.right {
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.right-logo {
+  width: 150px;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+}
+
+.right-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Üst Menü */
+.right-box {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.right-box__top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.right-box__top-a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 5px 15px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.right-box__top-a:hover {
+  color: var(--primary-color);
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Çizgi */
+.right-box__bottom {
+  position: relative;
+  height: 3px;
+  width: 100%;
+}
+
+.right-box__bottom-hr {
+  height: 3px;
+  background-color: var(--border-color);
+  border: none;
+  margin: 0;
+}
+
+.right-box__bottom-hr__red {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  background-color: var(--primary-color);
+  z-index: 2;
+}
+
+/* Form */
+.right-form {
+  width: 100%;
+}
+
+.input-cont {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-cont input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  font-size: 15px;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.input-cont input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.input-cont input::placeholder {
+  color: #888;
+}
+
+/* Checkbox */
+.gal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+.gal-input {
+  position: relative;
+  margin-right: 12px;
+}
+
+.gal-input input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+.gal-input label {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-color);
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gal-input input[type="checkbox"]:checked + label:after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--primary-color);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.gal-text {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+/* Button */
+.btn-cont {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-register-end {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-register-end:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-register-end:active {
+  transform: translateY(0);
+}
+
+/* Hata Mesajları */
+span[style*="color: #B22222"] {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gta-acount__content {
+    max-width: 95%;
+  }
+  
+  .right {
+    padding: 30px 20px;
+  }
+  
+  .right-logo {
+    width: 120px;
+  }
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.right {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.input-cont {
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.input-cont:nth-child(1) { animation-delay: 0.1s; }
+.input-cont:nth-child(2) { animation-delay: 0.2s; }
+.input-cont:nth-child(3) { animation-delay: 0.3s; }
+
+/* Ek Dokunuşlar */
+::selection {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: var(--primary-color);
+}

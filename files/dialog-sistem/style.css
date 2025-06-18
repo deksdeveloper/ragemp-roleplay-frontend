@@ -1,0 +1,11 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-body p {
+    font-weight: bold;
+}

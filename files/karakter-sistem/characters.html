@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Karakter Seçim Paneli</title>
+    <meta name="description" content="Karakter Seçim Paneli">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .panel-container {
+            width: 400px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .characters-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .characters-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .characters-container::-webkit-scrollbar-track {
+            background: #0a0a0a;
+            border-radius: 2px;
+        }
+
+        .characters-container::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 2px;
+        }
+        
+        .characters-container::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        .character-card {
+            background: #151515;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            padding: 15px;
+            border: 1px solid #222;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #3498db, #2980b9);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .character-card:hover {
+            border-color: #333;
+            background: #1a1a1a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .character-card:hover::before {
+            opacity: 1;
+        }
+
+        .character-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .character-name {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .character-level {
+            background: linear-gradient(90deg, #222, #333);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .character-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            gap: 10px;
+        }
+
+        .button {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+        }
+
+        .button-preview {
+            background: #2c3e50;
+        }
+
+        .button-preview:hover {
+            background: #34495e;
+        }
+
+        .button-select {
+            background: #2980b9;
+        }
+
+        .button-select:hover {
+            background: #3498db;
+        }
+
+        .create-character-button {
+            width: 100%;
+            padding: 15px 0;
+            background: #222;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .create-character-button:hover {
+            background: #333;
+        }
+
+        .footer {
+            padding: 0;
+            border-top: 1px solid #222;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .character-card {
+            animation: fadeIn 0.3s ease forwards;
+        }
+        
+        .character-card:nth-child(1) { animation-delay: 0.05s; }
+        .character-card:nth-child(2) { animation-delay: 0.1s; }
+        .character-card:nth-child(3) { animation-delay: 0.15s; }
+        .character-card:nth-child(4) { animation-delay: 0.2s; }
+
+        @media (max-width: 768px) {
+            .panel-container {
+                width: 85%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel-container">
+        <div class="panel-header">
+            <h2>Karakterler</h2>
+            <p>Bir karakter seçin veya yeni oluşturun</p>
+        </div>
+        
+        <div class="characters-container" id="characters">
+        </div>
+        
+        <div class="footer">
+            <button class="create-character-button" id="btn_newchar">Yeni Karakter</button>
+        </div>
+    </div>
+
+    <script src="../css/jquery.js"></script>
+    <script src="libs/js.cookie.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#btn_newchar').click(function() {
+                mp.trigger("CreateCharacter");
+            });
+
+            if(!Cookies.get('modalShown')) {
+                Cookies.set('modalShown', true);
+            }
+        });
+
+        function LoadCharacters(chars) {
+            var character = JSON.parse(chars);
+            if(character.length > 0) {
+                for(let i = 0; i < character.length; i++) {
+                    $('#characters').append(`
+                        <div class="character-card">
+                            <div class="character-info">
+                                <div class="character-name">${character[i].Name}</div>
+                                <div class="character-level">Seviye ${character[i].Level}</div>
+                            </div>
+                            <div class="character-buttons">
+                                <button class="button button-preview" id="preview_${character[i].ID}">İncele</button>
+                                <button class="button button-select" id="select_${character[i].ID}">Giriş</button>
+                            </div>
+                        </div>
+                    `);
+
+                    $(`#preview_${character[i].ID}`).click(function() {
+                        mp.trigger("ClientPreviewCharacterID", character[i].ID);
+                    });
+                    
+                    $(`#select_${character[i].ID}`).click(function() {
+                        mp.trigger("SelectCharacter", character[i].ID);
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

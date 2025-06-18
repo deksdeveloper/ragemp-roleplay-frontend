@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="fonts/font/stylesheet.css" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet">
+	<script src="./js/library/vue.js"></script>
+</head>
+
+<body>
+	<div class="main">
+        <div @click="exit()" class="exit">
+            X
+        </div>
+        <div v-if="style == 0" class="style0">
+            <div class="nameblock">
+                <div class="desc">Ekipman Dolabı</div>
+                <div class="desc2">Ekipmanları inceleyin ve kuşanın</div>
+            </div>
+            
+            <div class="allitems2">
+                <div class="items-grid">
+
+                    <div class="bbg2">
+                        <img src="img/Lampa.png" class="ico">
+                        <a>El Feneri</a>
+                        <button @click="buy(0)" class="buy-button">Seç</button>
+                    </div>
+
+                    <div class="bbg2">
+                        <img src="img/Pendrek.png" class="ico">
+                        <a>Cop</a>
+                        <button @click="buy(1)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Stungun-icon.png" class="ico">
+                        <a>Tazer</a>
+                        <button @click="buy(2)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Pistolj.png" class="ico">
+                        <a>Tabanca</a>
+                        <button @click="buy(3)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Pump_Shotgun.png" class="ico">
+                        <a>Pompalı Tüfek</a>
+                        <button @click="buy(4)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Pump-shotgun-mk2-icon.png" class="ico">
+                        <a>Pompalı Tüfek 2</a>
+                        <button @click="buy(5)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Assault_SMG.png" class="ico">
+                        <a>Assault SMG</a>
+                        <button @click="buy(6)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Combat_PDW.png" class="ico">
+                        <a>Combat PDW</a>
+                        <button @click="buy(7)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Assault_Rifle.png" class="ico">
+                        <a>Assault Rifle</a>
+                        <button @click="buy(8)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Special_Carabine.png" class="ico">
+                        <a>Special Carabine</a>
+                        <button @click="buy(9)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Advanced-rifle-icon.png" class="ico">
+                        <a>Advanced Rifle</a>
+                        <button @click="buy(14)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Heavy_Sniper.png" class="ico">
+                        <a>Heavy Sniper Rifle</a>
+                        <button @click="buy(10)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/radio.png" class="ico">
+                        <a>Telsiz</a>
+                        <button @click="buy(11)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/pancir.png" class="ico">
+                        <a>Çelik Yelek</a>
+                        <button @click="buy(12)" class="buy-button">Seç</button>
+                    </div>
+
+					<div class="bbg2">
+                        <img src="img/Bandage.png" class="ico">
+                        <a>İlk Yardım Kiti</a>
+                        <button @click="buy(12)" class="buy-button">Seç</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main {
+            width: 800px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nameblock {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .nameblock::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .desc {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .desc2 {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .allitems2 {
+            padding: 20px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .bbg2 {
+            background: #151515;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            height: 150px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .bbg2:hover {
+            border-color: #3498db;
+            background: #1a1a1a;
+        }
+
+        .bbg2 img.ico {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            object-fit: contain;
+        }
+
+        .bbg2 a {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .buy-button {
+            opacity: 0;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 15px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .buy-button:hover {
+            background: #2980b9;
+        }
+        
+        .bbg2:hover .buy-button {
+            opacity: 1;
+        }
+
+        .exit {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 10;
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .exit:hover {
+            background-color: #c0392b;
+        }
+
+        .exit a {
+            margin-right: 5px;
+            font-weight: bold;
+            color: white;
+        }
+
+        @media (max-width: 850px) {
+            .main {
+                width: 90%;
+                height: auto;
+            }
+            
+            .items-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .items-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <script src="./js/index.js"></script>
+	<script src="./js/library/jquery-3.2.1.min.js"></script>
+</body>
+</html>

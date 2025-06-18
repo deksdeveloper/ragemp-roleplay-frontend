@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Giysi Menüsü</title>
+    <meta name="description" content="Modernize Edilmiş Giysi Menüsü">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            padding-right: 50px;
+        }
+
+        .panel-container {
+            width: 400px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .menu-items {
+            padding: 20px;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+            position: relative;
+            animation: fadeIn 0.3s ease forwards;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item button {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            background: #151515;
+            border: 1px solid #222;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item button:hover {
+            background: #1c1c1c;
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .menu-item button:active {
+            transform: translateY(0);
+        }
+
+        .button-container {
+            padding: 0 20px 20px 20px;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            background: #e74c3c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .menu-item:nth-child(1) { animation-delay: 0.05s; }
+        .menu-item:nth-child(2) { animation-delay: 0.1s; }
+        .menu-item:nth-child(3) { animation-delay: 0.15s; }
+        .menu-item:nth-child(4) { animation-delay: 0.2s; }
+        .menu-item:nth-child(5) { animation-delay: 0.25s; }
+        .menu-item:nth-child(6) { animation-delay: 0.3s; }
+        .menu-item:nth-child(7) { animation-delay: 0.35s; }
+        .menu-item:nth-child(8) { animation-delay: 0.4s; }
+
+        @media (max-width: 768px) {
+            .panel-container {
+                width: 85%;
+                max-width: 350px;
+            }
+            
+            body {
+                justify-content: center;
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel-container">
+        <div class="panel-header">
+            <h2>KIYAFET DÜKKANI</h2>
+            <p>Kıyafetleri inceleyin ve satın alın</p>
+        </div>
+        
+        <div class="menu-items">
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(11);">Vücut</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(8);">Tişört</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(3);">Gövde</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(4);">Pantolon</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(6);">Ayakkabı</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(12);">Şapka</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(13);">Gözlük</button>
+            </div>
+            
+            <div class="menu-item">
+                <button type="button" onclick="Select_Menu(7);">Aksesuar</button>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button type="button" class="button" onclick="Select_Menu(0);">Çıkış</button>
+        </div>
+    </div>
+
+    <script>
+        function Select_Menu(id) {
+            mp.trigger("Cloth_Store", id);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Araba Dükkanı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: transparent;
+            user-select: none;
+            overflow: hidden;
+            color: #fff;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+        }
+        
+        #carshop {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            position: relative;
+        }
+        
+        #vehicle-list-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            max-width: 900px;
+        }
+        
+        #vehicle-boxes {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .vehicle-box {
+            background: rgba(17, 17, 17, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 12px 20px;
+            min-width: 120px;
+            text-align: center;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .nameblock {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .nameblock::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .desc {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .desc2 {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .vehicle-box:hover {
+            background: rgba(30, 30, 30, 0.9);
+            transform: translateY(-2px);
+        }
+        
+        .vehicle-box.selected {
+            background: #2980b9;
+            border-color: #3498db;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+        }
+        
+        .arrow-button {
+            background: rgba(17, 17, 17, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            margin: 0 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .arrow-button:hover {
+            background: #2980b9;
+        }
+        
+        .panel-container {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 350px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 10;
+        }
+        
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+        
+        .panel-header h2 {
+            color: #fff;
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .panel-content {
+            padding: 20px;
+        }
+        
+        .car-details {
+            margin-bottom: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-label {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .detail-value {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Renk Seçici */
+        .color-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        
+        #color-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+        
+        .color-box {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .color-box:hover {
+            transform: scale(1.05);
+        }
+        
+        .color-box.selected {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .color-box.black { background-color: #000; }
+        .color-box.white { background-color: #fff; }
+        .color-box.grey { background-color: #888; }
+        .color-box.red { background-color: #e74c3c; }
+        .color-box.green { background-color: #2ecc71; }
+        .color-box.blue { background-color: #3498db; }
+        .color-box.yellow { background-color: #f1c40f; }
+        .color-box.pink { background-color: #e84393; }
+        .color-box.purple { background-color: #9b59b6; }
+        .color-box.orange { background-color: #e67e22; }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .buy-button {
+            background: #2980b9;
+        }
+        
+        .buy-button:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .test-button {
+            background: #2c3e50;
+        }
+        
+        .test-button:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 73, 94, 0.3);
+        }
+        
+        .quit-button {
+            background: #c0392b;
+        }
+        
+        .quit-button:hover {
+            background: #e74c3c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            background: #151515;
+            border: 1px solid #222;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        .search-input::placeholder {
+            color: #666;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="carshop">
+        <div class="panel-container">
+            <div class="nameblock">
+                <div class="desc">ARAÇ GALERİSİ</div>
+                <div class="desc2">Araçları inceleyin ve satın alın</div>
+            </div>
+            <div class="panel-content">
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="Araç ara...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                
+                <div class="car-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Model:</span>
+                        <span class="detail-value" id="selected-car-name">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Fiyat:</span>
+                        <span class="detail-value" id="selected-car-price">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Maksimum Hız:</span>
+                        <span class="detail-value" id="selected-car-topspeed">-</span>
+                    </div>
+                </div>
+                
+                <div class="color-section">
+                    <div class="section-title">Renk Seç</div>
+                    <div id="color-container">
+                        <div class="color-box black"></div>
+                        <div class="color-box white"></div>
+                        <div class="color-box grey"></div>
+                        <div class="color-box red"></div>
+                        <div class="color-box green"></div>
+                        <div class="color-box blue"></div>
+                        <div class="color-box yellow"></div>
+                        <div class="color-box pink"></div>
+                        <div class="color-box purple"></div>
+                        <div class="color-box orange"></div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <div id="purchase-form" class="button buy-button">SATIN AL</div>
+                    <div id="test-form" class="button test-button">TEST SÜRÜŞÜ</div>
+                    <div id="quit-form" class="button quit-button">ÇIKIŞ</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="vehicle-list-container">
+            <div id="prev-button" class="arrow-button">&lt;</div>
+            <div id="vehicle-boxes"></div>
+            <div id="next-button" class="arrow-button">&gt;</div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            var vehicles = [
+                { name: "primo", price: 27500, topspeed: 189},
+                { name: "journey", price: 30000, topspeed: 134},
+                { name: "glendale", price: 30000, topspeed: 197},
+                { name: "surfer", price: 32500, topspeed: 134},
+                { name: "issi2", price: 35000, topspeed: 182},
+                { name: "moonbeam", price: 35000, topspeed: 167},
+                { name: "asbo", price: 35500, topspeed: 171},
+                { name: "ingot", price: 37500, topspeed: 167},
+                { name: "stratum", price: 43500, topspeed: 182},
+                { name: "minivan", price: 45000, topspeed: 167},
+                { name: "bobcatxl", price: 48000, topspeed: 175},
+                { name: "club", price: 50000, topspeed: 189},
+                { name: "habanero", price: 50000, topspeed: 184},
+                { name: "vigero", price: 51000, topspeed: 189},
+                { name: "kanjo", price: 52500, topspeed: 189},
+                { name: "everon", price: 52500, topspeed: 182},
+                { name: "caracara2", price: 60000, topspeed: 185},
+                { name: "speedo", price: 70000, topspeed: 173},
+                { name: "omnis", price: 75000, topspeed: 204},
+                { name: "bison", price: 75000, topspeed: 175},
+                { name: "zion2", price: 85000, topspeed: 195},
+                { name: "windsor", price: 92500, topspeed: 202},
+                { name: "buffalo2", price: 115000, topspeed: 195},
+                { name: "tailgater", price: 125000, topspeed: 195},
+                { name: "kuruma", price: 125000, topspeed: 193},
+                { name: "dominator3", price: 135000, topspeed: 195},
+                { name: "jester3", price: 150000, topspeed: 210},
+                { name: "stretch", price: 175000, topspeed: 182},
+                { name: "infernus2", price: 175000, topspeed: 200},
+                { name: "specter", price: 180000, topspeed: 208},
+                { name: "locust", price: 200000, topspeed: 208},
+                { name: "komoda", price: 215000, topspeed: 210},
+                { name: "jugular", price: 225000, topspeed: 212},
+                { name: "italigto", price: 230000, topspeed: 217},
+                { name: "schafter3", price: 300000, topspeed: 202},
+                { name: "visione", price: 375000, topspeed: 217},
+                { name: "vagner", price: 430000, topspeed: 217},
+                { name: "dubsta2", price: 600000, topspeed: 189},
+                { name: "rebla", price: 600000, topspeed: 213},
+                { name: "coquette4", price: 600000, topspeed: 217},
+                { name: "baller4", price: 700000, topspeed: 182},
+                { name: "toros", price: 750000, topspeed: 208},
+                { name: "dubsta3", price: 800000, topspeed: 184},
+                { name: "superd", price: 1000000, topspeed: 195},
+                { name: "tyrant", price: 1150000, topspeed: 221},
+                { name: "entityxf", price: 1500000, topspeed: 210},
+                { name: "nero", price: 1800000, topspeed: 217},
+                { name: "thrax", price: 1850000, topspeed: 215},
+                { name: "nero2", price: 1900000, topspeed: 217},
+                { name: "entity2", price: 2300000, topspeed: 228},
+                { name: "deveste", price: 2500000, topspeed: 228}
+            ];
+            
+            // Renk haritası
+            var colorMap = {
+                "black": "0",
+                "white": "132",
+                "grey": "18",
+                "red": "28",
+                "green": "55",
+                "blue": "70",
+                "yellow": "89",
+                "pink": "135",
+                "purple": "145",
+                "orange": "138"
+            };
+            
+            var vehicleBoxes = document.getElementById("vehicle-boxes");
+            var buyButton = document.getElementById("purchase-form");
+            var testButton = document.getElementById("test-form");
+            var prevButton = document.getElementById("prev-button");
+            var nextButton = document.getElementById("next-button");
+            var quitButton = document.getElementById("quit-form");
+            var searchInput = document.getElementById("search-input");
+            var colorBoxes = document.querySelectorAll(".color-box");
+            
+            var vehicleIndex = 0;
+            var selectedVehicleName = "";
+            var selectedColor = "0"; 
+            var filteredVehicles = [...vehicles];
+            
+            function createVehicleBoxes() {
+                vehicleBoxes.innerHTML = "";
+                
+                for (var i = 0; i < filteredVehicles.length; i++) {
+                    var box = document.createElement("div");
+                    box.classList.add("vehicle-box");
+                    box.textContent = filteredVehicles[i].name;
+                    box.dataset.index = i;
+                    
+                    box.addEventListener("click", function() {
+                        vehicleIndex = parseInt(this.dataset.index);
+                        updateVehicleDisplay();
+                    });
+                    
+                    vehicleBoxes.appendChild(box);
+                }
+            }
+            
+            function updateVehicleDisplay() {
+                if (filteredVehicles.length === 0) {
+                    document.getElementById("selected-car-name").textContent = "-";
+                    document.getElementById("selected-car-price").textContent = "-";
+                    document.getElementById("selected-car-topspeed").textContent = "-";
+                    selectedVehicleName = "";
+                    return;
+                }
+                
+                var numVehiclesToShow = 5;
+                var startIndex = Math.max(0, Math.min(filteredVehicles.length - numVehiclesToShow, vehicleIndex));
+                var endIndex = Math.min(startIndex + numVehiclesToShow, filteredVehicles.length);
+                var vehicleBoxesChildren = vehicleBoxes.children;
+                
+                for (var i = 0; i < vehicleBoxesChildren.length; i++) {
+                    vehicleBoxesChildren[i].style.display = "none";
+                }
+                
+                for (var i = startIndex; i < endIndex; i++) {
+                    vehicleBoxesChildren[i].style.display = "flex";
+                    
+                    if (i === vehicleIndex) {
+                        vehicleBoxesChildren[i].classList.add("selected");
+                        document.getElementById("selected-car-name").textContent = filteredVehicles[i].name;
+                        document.getElementById("selected-car-price").textContent = "$" + filteredVehicles[i].price;
+                        document.getElementById("selected-car-topspeed").textContent = filteredVehicles[i].topspeed + " km/h";
+                        selectedVehicleName = filteredVehicles[i].name;
+                        
+                        mp.trigger("clientvehpreview", selectedVehicleName, selectedColor);
+                    } else {
+                        vehicleBoxesChildren[i].classList.remove("selected");
+                    }
+                }
+            }
+            
+            searchInput.addEventListener("input", function() {
+                var searchTerm = this.value.toLowerCase().trim();
+                
+                if (searchTerm === "") {
+                    filteredVehicles = [...vehicles];
+                } else {
+                    filteredVehicles = vehicles.filter(function(vehicle) {
+                        return vehicle.name.toLowerCase().includes(searchTerm);
+                    });
+                }
+                
+                createVehicleBoxes();
+                vehicleIndex = 0;
+                updateVehicleDisplay();
+            });
+            
+            colorBoxes.forEach(function(colorBox) {
+                colorBox.addEventListener("click", function() {
+                    colorBoxes.forEach(function(box) {
+                        box.classList.remove("selected");
+                    });
+                    
+                    this.classList.add("selected");
+                    
+                    var className = this.classList[1];
+                    selectedColor = colorMap[className];
+                    
+                    // Araç önizlemesini güncelle
+                    if (selectedVehicleName) {
+                        mp.trigger("clientvehpreview", selectedVehicleName, selectedColor);
+                    }
+                });
+            });
+            
+            colorBoxes[0].classList.add("selected");
+            
+            prevButton.addEventListener("click", function() {
+                vehicleIndex = Math.max(0, vehicleIndex - 1);
+                updateVehicleDisplay();
+            });
+            
+            nextButton.addEventListener("click", function() {
+                vehicleIndex = Math.min(filteredVehicles.length - 1, vehicleIndex + 1);
+                updateVehicleDisplay();
+            });
+            
+            buyButton.addEventListener("click", function() {
+                if (selectedVehicleName) {
+                    mp.trigger("clientbveh", selectedVehicleName, selectedColor);
+                }
+            });
+            
+            testButton.addEventListener("click", function() {
+                if (selectedVehicleName) {
+                    mp.trigger("testvoznjaveh", selectedVehicleName);
+                }
+            });
+            
+            quitButton.addEventListener("click", function() {
+                mp.trigger("cexitvehshop");
+                mp.trigger("HideCarShop");
+            });
+            
+            createVehicleBoxes();
+            updateVehicleDisplay();
+            
+            if (filteredVehicles.length > 0) {
+                try {
+                    mp.trigger("clientvehpreview", filteredVehicles[0].name, selectedColor);
+                } catch (e) {
+                    console.log("MP trigger not available in browser preview");
+                }
+            }
+        });
+    </script>
+</body>
+</html>

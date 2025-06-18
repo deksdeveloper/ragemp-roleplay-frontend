@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <title>Raporlar</title>
+</head>
+
+<body>
+    <div class="main">
+        <div @click="exit()" class="exit">
+            X
+        </div>
+        <div class="nameblock">
+            <div class="desc">Raporlar</div>
+            <div class="desc2">Raporları inceleyin ve yanıtlayın</div>
+        </div>
+        
+        <div class="allitems2">
+            <div class="items-grid">
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main {
+            width: 800px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nameblock {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .nameblock::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .desc {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .desc2 {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .allitems2 {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        /* Özel scrollbar tasarımı */
+        .allitems2::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .allitems2::-webkit-scrollbar-track {
+            background: rgba(17, 17, 17, 0.8);
+            border-radius: 10px;
+        }
+        
+        .allitems2::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 10px;
+        }
+        
+        .allitems2::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 15px;
+        }
+
+        .bbg2 {
+            background: #151515;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .bbg2:hover {
+            border-color: #3498db;
+            background: #1a1a1a;
+        }
+        
+        .id-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3498db;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .player-info {
+            display: inline-block;
+            margin-top: 5px;
+            color: #7f8c8d;
+            font-size: 12px;
+            font-style: italic;
+            font-weight: 500;
+            background-color: rgba(52, 152, 219, 0.05);
+            border-radius: 4px;
+            padding: 4px 8px;
+        }
+        
+        .report-text {
+            color: #fff;
+            font-size: 14px;
+            margin: 15px 0;
+            padding-right: 50px;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 15px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .answer-button {
+            background: #2ecc71;
+        }
+        
+        .answer-button:hover {
+            background: #27ae60;
+        }
+        
+        .delete-button {
+            background: #e74c3c;
+        }
+        
+        .delete-button:hover {
+            background: #c0392b;
+        }
+        
+        .answer-section {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .answer-input {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background: #222;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            resize: none;
+        }
+        
+        .send-button {
+            align-self: flex-end;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 15px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .send-button:hover {
+            background: #27ae60;
+        }
+
+        .exit {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 10;
+            background-color: #e74c3c;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .exit:hover {
+            background-color: #c0392b;
+        }
+
+        @media (max-width: 850px) {
+            .main {
+                width: 90%;
+                height: auto;
+            }
+        }
+    </style>
+    
+    <script>
+        let isVisible = true;
+        
+        function SendingReport(reportListJson) {
+            isVisible = true;
+            
+            document.querySelector(".main").style.display = "block";
+            
+            try {
+                const reportList = JSON.parse(reportListJson);
+                const container = document.querySelector(".items-grid");
+                
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+                
+                reportList.forEach((report) => {
+                    const reportDiv = document.createElement("div");
+                    reportDiv.classList.add("bbg2");
+                    
+                    const idTag = document.createElement("span");
+                    idTag.classList.add("id-tag");
+                    idTag.textContent = `ID: ${report.rid}`;
+                    reportDiv.appendChild(idTag);
+                    
+                    const reportText = document.createElement("div");
+                    reportText.classList.add("report-text");
+                    reportText.textContent = report.reporttext;
+                    reportDiv.appendChild(reportText);
+                    
+                    const playerInfo = document.createElement("div");
+                    playerInfo.classList.add("player-info");
+                    playerInfo.textContent = `${report.PlayerName || "Bilinmiyor"} (ID: ${report.PlayerId})`;
+                    reportDiv.appendChild(playerInfo);
+                    
+                    const buttonContainer = document.createElement("div");
+                    buttonContainer.classList.add("button-container");
+                    
+                    const answerButton = document.createElement("button");
+                    answerButton.classList.add("action-button", "answer-button");
+                    answerButton.textContent = "ONAY";
+                    
+                    let answerShown = false;
+                    answerButton.addEventListener("click", () => {
+                        if (!answerShown) {
+                            const answerSection = document.createElement("div");
+                            answerSection.classList.add("answer-section");
+                            
+                            const answerInput = document.createElement("textarea");
+                            answerInput.classList.add("answer-input");
+                            answerInput.setAttribute("placeholder", "Yanıt yazın...");
+                            
+                            const sendButton = document.createElement("button");
+                            sendButton.classList.add("send-button");
+                            sendButton.textContent = "GÖNDER";
+                            
+                            sendButton.addEventListener("click", () => {
+                                const answer = answerInput.value;
+                                sendAnswer(report.rid, answer);
+                            });
+                            
+                            answerSection.appendChild(answerInput);
+                            answerSection.appendChild(sendButton);
+                            reportDiv.appendChild(answerSection);
+                            answerShown = true;
+                            
+                            buttonContainer.style.display = "none";
+                        }
+                    });
+                    
+                    buttonContainer.appendChild(answerButton);
+                    
+                    const deleteButton = document.createElement("button");
+                    deleteButton.classList.add("action-button", "delete-button");
+                    deleteButton.textContent = "SİL";
+                    
+                    deleteButton.addEventListener("click", () => {
+                        mp.trigger("client::dreport", report.rid);
+                        container.removeChild(reportDiv);
+                    });
+                    
+                    buttonContainer.appendChild(deleteButton);
+                    reportDiv.appendChild(buttonContainer);
+                    container.appendChild(reportDiv);
+                });
+            } catch (error) {
+                console.error("Error parsing report data:", error);
+            }
+        }
+        
+        function sendAnswer(playerId, answer) {
+            mp.trigger("client::lpanswer", playerId, answer);
+        }
+        
+        function exit() {
+            if (isVisible) {
+                document.querySelector(".main").style.display = "none";
+                isVisible = false;
+                
+                mp.trigger("Hide_Crafting_System");
+            }
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".exit").addEventListener("click", exit);
+            
+            isVisible = true;
+        });
+        
+        function ShowReportInterface() {
+            document.querySelector(".main").style.display = "block";
+            isVisible = true;
+        }
+    </script>
+</body>
+</html>

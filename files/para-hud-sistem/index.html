@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para İşlem</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="parageldi" class="parageldi" style="display: none;">+1000</div>
+    <div id="paragitti" class="paragitti" style="display: none;">-1000</div>
+    <script>
+        function ParaIslem(para, islem) {
+        const paragitti = document.getElementById("paragitti");
+        const parageldi = document.getElementById("parageldi");
+
+        const formattedPara = para.toLocaleString();
+
+        if (islem === 2) {
+            paragitti.style.display = 'none';
+            parageldi.textContent = `$+${formattedPara}`;
+            parageldi.style.display = 'block';
+
+            setTimeout(() => {
+                parageldi.style.display = 'none';
+            }, 3000);
+        } else {
+            parageldi.style.display = 'none'; 
+            paragitti.textContent = `$${formattedPara}`;
+            paragitti.style.display = 'block';
+
+            setTimeout(() => {
+                paragitti.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    </script>
+    
+</body>
+</html>

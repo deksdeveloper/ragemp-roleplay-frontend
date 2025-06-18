@@ -1,0 +1,41 @@
+@font-face{
+	font-family: AABoldFont;
+	src: url(../fonts/aafuture-bold.ttf) format("truetype");
+}
+
+.card {
+	font-family: AABoldFont, sans-serif; /* Bold fontu burada kullandık */
+	background: linear-gradient(90deg, rgb(70, 70, 70) 0%, rgb(43, 43, 43) 100%) !important;
+	border-radius: 12px !important;
+}
+
+.card-header{
+	background: linear-gradient(0.25turn, #0099ff, #024d94, #033564);
+	margin-top:2em;
+
+}
+.card-close-button{
+	border:1px solid #303030 !important;
+}
+button, a{
+	background:#303030 !important;
+	border:1px solid #007A96 !important;
+	color:#007A96 !important;
+}
+button,a:hover{
+	background:#007A96 !important;
+	color:black !important;
+}
+.ipad{
+	position:absolute;
+	left:12%;
+	right:0%;
+	
+	top:11.5%;
+	width:100%;
+	}
+	.ipad img{
+		margin:0 auto;
+		width:77vw;
+		height:78vh !important;
+	}

@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Kayıt Formu</title>
+    <meta name="description" content="Modernize Edilmiş Kayıt Formu">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            /* background: linear-gradient(135deg, #0a0a0a, #1a1a1a); */
+        }
+
+        .panel-container {
+            width: 400px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .input-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-container input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            background: #151515;
+            border: 1px solid #222;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .input-container input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .input-container input::placeholder {
+            color: #666;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            background: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .button:hover {
+            background: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .input-container {
+            animation: fadeIn 0.3s ease forwards;
+        }
+        
+        .input-container:nth-child(1) { animation-delay: 0.05s; }
+        .input-container:nth-child(2) { animation-delay: 0.1s; }
+        .input-container:nth-child(3) { animation-delay: 0.15s; }
+        .input-container:nth-child(4) { animation-delay: 0.2s; }
+
+        @media (max-width: 768px) {
+            .panel-container {
+                width: 85%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel-container">
+        <div class="panel-header">
+            <h2>Kayıt Ol</h2>
+            <p>Hesap oluşturmak için bilgilerinizi girin</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="auth-form" method="POST">
+                <div class="input-container">
+                    <input type="email" name="user__email" id="user__email-id" placeholder="E-posta" required>
+                    <div id="ERROR4" class="error-message"></div>
+                </div>
+                
+                <div class="input-container">
+                    <input type="password" name="user__pw" id="user__pw-id" placeholder="Parola" required>
+                    <div id="ERROR3" class="error-message"></div>
+                </div>
+                
+                <div class="input-container">
+                    <input type="password" name="user__pw-repeat" id="user_pw_repeat" placeholder="Parolayı Tekrarla" required>
+                    <div id="ERROR1" class="error-message"></div>
+                </div>
+                
+                <div class="input-container">
+                    <input type="text" name="user__referral" id="user_refferal" placeholder="Referans Kodu (İsteğe Bağlı)">
+                </div>
+                
+                <button type="button" class="button" onclick="sendAccountInfo(1);">KAYIT OL</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+        function displayerror0() {
+            document.getElementById("ERROR0").innerHTML = "Şifreyi yanlış girdiniz veya hesabınız yok.";
+        }
+
+        function displayerror1() {
+            document.getElementById("ERROR1").innerHTML = "Şifreler birbirine uymuyor.";
+        }
+
+        function displayerror2() {
+            document.getElementById("ERROR2").innerHTML = "Bu e-posta adresi mevcut değil.";
+        }
+
+        function displayerror3() {
+            document.getElementById("ERROR3").innerHTML = "Şifreniz 4-30 karakter arasında olmalıdır.";
+        }
+
+        function displayerror4() {
+            document.getElementById("ERROR4").innerHTML = "E-postayı doğru girmediniz.";
+        }
+
+        function displayerror5() {
+            document.getElementById("ERROR5").innerHTML = "Bu e-posta daha önce kaydedilmiş.";
+        }
+
+        function displayerror6() {
+            document.getElementById("ERROR0").innerHTML = "Başka birisi hesabınıza giriş yapmış.";
+        }
+
+        function sendAccountInfo(state){
+            $('.alert-danger').hide();
+            if(state === 1){    //Register State
+                let user__email_id = document.getElementById("user__email-id");
+                let user__pw_id = document.getElementById("user__pw-id");
+                let user_pw_repeat = document.getElementById("user_pw_repeat");
+                let refferal = document.getElementById("user_refferal");
+                
+                if(user__pw_id.value != user_pw_repeat.value) {
+                    document.getElementById("ERROR1").innerHTML = "Şifreler uyuşmuyor!";
+                    return;
+                }
+              
+                mp.trigger("registerUser", user_pw_repeat.value, user__email_id.value, refferal.value);
+            }
+        }
+
+        $(document).ready(function () {            
+            $("#auth-form").keyup(function (e) {
+                if (e.keyCode == 13) {
+                    sendAccountInfo(1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

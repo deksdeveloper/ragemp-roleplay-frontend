@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'Pricedown';
+    src: url('pricedown-bl.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+
+.parageldi 
+{
+    display: none;
+    font-family: 'Pricedown', sans-serif;
+    font-size: 48px;
+    color: #0f9f0f;
+    margin-right: 20px;
+    margin-bottom: -350px; /* Alt boşluk ekler */
+    letter-spacing: 2px;
+    text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 3px 0 #000, 3px 3px 0 #000;
+    user-select: none;
+}
+
+.paragitti 
+{
+    display: none;
+    font-family: 'Pricedown', sans-serif;
+    font-size: 48px;
+    color: #b70707;
+    margin-right: 20px;
+    margin-bottom: -350px; /* Alt boşluk ekler */
+    letter-spacing: 2px;
+    text-shadow: -1px -1px 0 #000, 3px -1px 0 #000, -1px 3px 0 #000, 3px 3px 0 #000;
+    user-select: none;
+}

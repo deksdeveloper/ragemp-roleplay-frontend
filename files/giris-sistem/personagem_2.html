@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Karakter Oluşturma Paneli</title>
+    <meta name="description" content="Karakter Oluşturma Paneli">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .create-char {
+            width: 450px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: fixed;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+            color: #fff;
+            left: 50px;
+            top: 50%; 
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .content-section {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .content-section::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .content-section::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .content-section::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 10px;
+        }
+
+        .slider-container {
+            margin-bottom: 18px;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .setting-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #eee;
+        }
+
+        .slider-value, .badge {
+            background: rgba(20, 20, 20, 0.8);
+            color: #3498db;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge i {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .slider {
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .ui.range {
+            height: 6px;
+            width: 100%;
+            position: relative;
+            padding: 0 9px;
+            box-sizing: border-box;
+        }
+
+        .ui.range .inner {
+            height: 6px;
+            background: linear-gradient(90deg, #2980b9, #3498db);
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .ui.range .thumb {
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .step-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .step-buttons .button {
+            flex: 1;
+        }
+
+        .button {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-dark {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .button-dark:hover {
+            background: #34495e;
+        }
+
+        .button-yellow {
+            background: #2980b9;
+            color: white;
+        }
+
+        .button-yellow:hover {
+            background: #3498db;
+        }
+
+        .step-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 20px 0;
+        }
+
+        .camera {
+            position: fixed;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-350%);
+            background: rgba(17, 17, 17, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 220px;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .camera-title {
+            display: block;
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .camera-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .camera-buttons .button {
+            font-size: 12px;
+            padding: 8px 12px;
+            flex: 1;
+        }
+
+        .rotate {
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slider-container:nth-child(1) { animation-delay: 0.05s; }
+        .slider-container:nth-child(2) { animation-delay: 0.1s; }
+        .slider-container:nth-child(3) { animation-delay: 0.15s; }
+        .slider-container:nth-child(4) { animation-delay: 0.2s; }
+        .slider-container:nth-child(5) { animation-delay: 0.25s; }
+        .slider-container:nth-child(6) { animation-delay: 0.3s; }
+        .slider-container:nth-child(7) { animation-delay: 0.35s; }
+        .slider-container:nth-child(8) { animation-delay: 0.4s; }
+        .slider-container:nth-child(9) { animation-delay: 0.45s; }
+        .slider-container:nth-child(10) { animation-delay: 0.5s; }
+        .slider-container:nth-child(11) { animation-delay: 0.55s; }
+        .slider-container:nth-child(12) { animation-delay: 0.6s; }
+        .slider-container:nth-child(13) { animation-delay: 0.65s; }
+        .slider-container:nth-child(14) { animation-delay: 0.7s; }
+        .slider-container:nth-child(15) { animation-delay: 0.75s; }
+        .slider-container:nth-child(16) { animation-delay: 0.8s; }
+        .slider-container:nth-child(17) { animation-delay: 0.85s; }
+
+        .camera-buttons .button.active {
+            background: #3498db;
+        }
+    </style>
+</head>
+
+<body class="create">
+    <div class="create-char create-char-2">
+        <div class="panel-header">
+            <h2>Yüz Özellikleri</h2>
+            <p>Karakterinizin yüz özelliklerini düzenleyin</p>
+        </div>
+
+        <div class="content-section">
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Burun Deliği Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="11"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Kaş Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="7"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Kaş Uzunluğu</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="6"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Burun Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="0"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Burun Uzunluğu</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="1"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Burun Eğriliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="3"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Burun Ucu</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="4"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Burun Eğimi</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="5"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Yanak Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="10"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Kemiği Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="9"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Kemiği Uzunluğu</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="8"></div>
+                </div>
+            </div>
+
+            <div class="step-divider"></div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Dudak Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="12"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="13"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Yüksekliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="14"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Uzunluğu</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="15"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Genişliği</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="17"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Şekli</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="18"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Çene Konumu</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="16"></div>
+                </div>
+            </div>
+
+            <div class="step-buttons">
+                <div class="button button-dark" id="charcreation_back"><i class="fas fa-sign-out-alt" style="transform: rotate(180deg); margin-right: 5px;"></i> Geri</div>
+                <div class="button button-yellow" id="charcreation_next">İleri <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="camera">
+        <span class="camera-title">Kamera Kontrolü</span>
+        <div class="camera-buttons">
+            <div class="button button-dark active" id="charcreation_head"><i class="fas fa-user" style="margin-right: 5px;"></i> Yüz</div>
+            <div class="button button-dark" id="charcreation_body"><i class="fas fa-male" style="margin-right: 5px;"></i> Vücut</div>
+        </div>
+        <span class="camera-title rotate">Döndür</span>
+        <div class="ui range" id="range_rotation"></div>
+    </div>
+
+    <script src="../css/jquery.js"></script>
+    <script src="css/range.js"></script>
+    <script src="../css/semantic.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+			$("#charcreation_back").click(function () {
+				mp.trigger("ClientCharCreation2Back");
+			});
+
+			$("#charcreation_next").click(function () {
+				mp.trigger("ClientCharCreation2Next");
+			});
+
+			$("#charcreation_head").click(function () {
+				mp.trigger("cameraPointTo", 1);
+			});
+
+			$("#charcreation_body").click(function () {
+				mp.trigger("cameraPointTo", 0);
+			});
+
+			$('#range_rotation').range({
+				min: 0,
+				max: 360,
+				start: 100,
+				step: 20,
+				smooth: false,
+				onChange: function (val, data) {
+					OnRangeChange("range_rotation", val, null)
+				}
+			});
+			$('#range_elevation').range({
+				min: -2,
+				max: 1,
+				start: 0,
+				step: 1,
+				smooth: false,
+				onChange: function (val, data) {
+					OnRangeChange("range_elevation", val, null)
+				}
+			});
+		});
+
+		function OnRangeChange(id, val, data) {
+			console.log(id, val);
+			mp.trigger("ClientOnRangeChange", id, val);
+		}
+
+		function LoadFaceFeatures(arr_data) {
+			var data = JSON.parse(arr_data);
+			for (let i = 0; i <= 20; i++) {
+				$("#" + i).range({
+					min: 0,
+					max: 19,
+					start: data[i].FaceFeatures,
+					step: 1,
+					onChange: function (val) {
+						mp.trigger("ClientSetFaceFeature", i, val);
+					},
+					smooth: false
+				});
+			};
+		}
+    </script>
+</body>
+</html>

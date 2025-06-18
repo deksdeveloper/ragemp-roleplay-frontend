@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<!-- <base href="/"> -->
+	<title>CC</title>
+	<meta name="description" content="CC">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/speedometer.css">
+	<link rel="stylesheet" href="css/right_top.css">
+	<link rel="stylesheet" href="css/left_bottom.css">
+	<link rel="stylesheet" href="css/weapon.css">
+	<link rel="stylesheet" href="css/right_bottom.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700,900&display=swap" id="font">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<link rel="stylesheet" href="../giris-sistem/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<!--new-->
+	<link rel="stylesheet" href="css/new-style.css">
+
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+	<style>
+		.cont {
+			color: rgb(239 239 239);
+			font-family: 'Poppins', sans-serif;
+			font-weight: 600;
+			padding: 6px;
+			width: fit-content;
+			height: 31px;
+			border-radius: 6px;
+			font-size: 14px;
+			background: #2b2b2b96;
+			display: flex;
+			align-items: center;
+		}
+		
+		.vicinity {
+		  position: absolute;
+		  top: 50.2vw;
+		  left: 15.9vw;
+		  color: rgb(255, 255, 255);
+		  font-size: 0.75vw;
+		  font-weight: 650;
+		  padding: 0.3vw;
+		  padding-right:1.3vw;
+		  text-overflow:ellipsis;
+		  overflow:hidden;
+		  min-width: 14vw;
+		  max-width: 25vw;
+		  height: 1.9vw;
+		  border-radius: 10px;
+		  background: linear-gradient(90deg, rgba(40, 167, 255, 1) 0%, rgb(109 109 109) 0%, rgba(0, 0, 0, 0) 100%);
+		  border-left: 3px solid #333333;
+		}
+		
+		* {
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+		
+		body {
+		  user-select: none;
+		  overflow:hidden;
+		}
+		
+		#heal {
+		  position:absolute;
+		  left: -10.19%;
+		  top:96.21%;
+		  margin: 1.12%;
+		  margin-left: 11.7%;
+		  width: 7.1%;
+		  height: 1.5%;
+		  text-align: center;
+		  border-style: solid;
+		  border-right: none;
+		  border-top: solid rgba(0, 0, 0, 0.525) 4px;
+		  border-bottom: solid rgba(0, 0, 0, 0.525) 4px;
+		  border-left: none;
+		  background-color:#69b7ff68;
+		}
+		
+		#armor {
+		  position:absolute;
+		  left: -3.1%;
+		  top:96.21%;
+		  margin: 1.12%;
+		  margin-left: 11.71%;
+		  width: 6.982%;
+		  height: 1.5%;
+		  text-align: center;
+		  border-style: solid;
+		  border-right: none;
+		  border-top: solid rgba(0, 0, 0, 0.525) 4px;
+		  border-bottom: solid rgba(0, 0, 0, 0.525) 4px;
+		  border-left: none;
+		  background: rgba(255, 221, 109, 0.548);
+		}
+		
+		#boxArmor {
+		  background: #e5ff5191;
+		  width: 20%;
+		  height: 100%;
+		}
+		
+		#box {
+		  background: #5473ff80;
+		  width: 20%;
+		  height: 100%;
+		}
+
+		.tachCluster {
+			font-family: 'Poppins', sans-serif;
+			padding-right: 2vw;
+			font-size: 2vw;
+			margin-left: 1.2vw;
+			text-align: center;
+			}
+
+			.speedoBase {
+			background: -webkit-linear-gradient(
+				right,
+				rgba(10, 10, 10, 1),
+				rgba(0, 0, 0, 0.34)
+			);
+			font-family: 'Poppins', sans-serif;
+			font-size: 1.3vw;
+			color: #d7d7d7;
+			list-style-type: none;
+			text-align: center;
+			margin-top: 52vw;
+			margin-left: 71vw;
+			display: block;
+			position: absolute;
+			min-width: 25vw;
+			max-width: 25vw;
+			padding: 0.5vw;
+			}
+
+			.speedo {
+			font-family: 'Poppins', sans-serif;
+			right: 22vw;
+			position: absolute;
+			transform: scale(0.11);
+			display: block;
+			margin-top: 42vw;
+			}
+
+			.speedo .board {
+			position: absolute;
+			}
+
+			.speedo .needle {
+			position: absolute;
+			left: 975px;
+			transform-origin: center 1234px;
+			transition: 500ms linear all;
+			}
+
+			@keyframes fadeTacho {
+			from {
+				bottom: -20vw;
+			}
+			to {
+				bottom: 16vw;
+			}
+			}
+
+			td {
+			overflow: hidden;
+			}
+		</style>
+		
+</head>
+
+<body class="hud">
+	<div>
+		<div style="position: absolute; bottom:18px; left: 16%;">
+		  <div id="guvenlibolge" style="margin-top:5px;background: rgb(93 161 87 / 65%);border:none;padding:5px;font-size: 13px;" class="cont">Güvenli Bölge</div>
+		  <div style="display:flex;">
+			<div style="margin-top:5px; background: #66cd329c;" class="cont">
+			  <div id="nakitpara" class="mdi mdi-wallet-bifold" style="margin-right:4px;"> $1,234,567</div>
+			</div>
+			<div style="margin-top:5px; margin-left:5px; background: rgb(53 107 26 / 61%);" class="cont">
+			  <div id="bankapara" class="mdi mdi-bank" style="margin-right:4px;"> $89,123</div>
+			</div>
+		  </div>
+		  <div style="display: flex; align-items: flex-end;">
+			<div style="margin-top:5px; height:fit-content; padding: 5px; padding-right:10px;" class="cont">
+			  <i class="fa-solid fa-location-dot" style="margin-right: 8px; font-size: 28px;"></i>
+			  <div style="display: flex; flex-direction: column;">
+				<span id="sehir" style="font-weight:bold;">Location Name</span>
+				<span id="sokak" style="margin-top: -6px; font-size: 12px; color: #d7d7d7;">Location Subname</span>
+			  </div>
+			</div>
+			<div style="margin-top:5px; margin-left:5px;" class="cont">
+				<div id="fps" class="mdi mdi-speedometer-medium" style="margin-right:4px;"> 90 FPS</div>
+			  </div>
+
+		  </div>
+		</div>
+		<div style="position: absolute; bottom:18px; right: 0.3vw; display: flex; flex-direction: column; align-items: flex-end;">
+		  <div style="margin-bottom:5px; height:fit-content; padding: 5px;" class="cont">
+			<i class="mdi mdi-calendar-clock" style="margin-right: 8px; font-size: 25px;"></i>
+			<div style="display: flex; flex-direction: column;">
+			  <span id="saat" style="font-weight:bold;">12:34</span>
+			  <span id="tarih" style="margin-top: -6px; font-size: 12px; color: #d7d7d7;">21.01.2025</span>
+			</div>
+		  </div>
+		  <span class="cont" style="overflow: hidden;">
+			<div style="font-family: 'Poppins', sans-serif; font-weight: 600; display: flex; color:white; align-items: center; margin-right: 3px;">
+			  <span style="font-size: 18px; font-weight: 900; margin-right:4px;">V0.0.1</span>
+			  <span style="font-weight: 400; color: lightgrey;">niva-rp.com</span>
+			</div>
+		  </span>
+		</div>
+	  </div>
+
+
+		<div class="right-top" id="rightTop">
+			<div class="container">
+				<!-- to delete -->
+
+				<!--<div class="server">
+                <div class="logo-wrapper">
+                    <div class="title">
+                        <div class="icon">Satellit</div>
+                        <div class="games">RolePlay </div>
+                    </div>
+                    <div class="logo">
+                        <img src="assets/logo.png" alt="">
+                    </div>
+                </div>
+                <div class="online">Онлайн: <span id="online_players">2528</span></div>
+            </div>-->
+
+				<!-- end to delete -->
+			
+			</div>
+		</div>
+
+		<!-- new -->
+		<div id="info_speed_box" class="info-speed-box">
+			<div style="position: absolute; bottom: 10px; display: flex; width: 100%; justify-content: center; align-items: center;">
+				<span style="background: #2b2b2b96; padding: 3px; border-radius: 4px; border-top: 2px solid #393939; color: white;">
+					<i style="margin-right: 3px;" class="fa-solid fa-gear">
+					  <span id="hasar" style="font-family: 'Poppins', sans-serif;">100%</span>
+					</i>
+				  </span>	
+				  <span style="background: #2b2b2b96; padding: 3px; border-radius: 4px; border-top: 2px solid #393939; font-weight: bold; font-size: 20px; color: white; margin: 4px;">
+					<span id="hiz" style="font-family: 'Poppins', sans-serif;">100</span> 
+					<span style="font-weight: normal; color: #cfcfcf; font-family: 'Poppins', sans-serif;">KM/H</span>
+				  </span>
+				  
+				 <span style="background: #2b2b2b96; padding: 3px; border-radius: 4px; border-top: 2px solid #393939; color: white;">
+					<i style="margin-right: 3px;" class="fa-solid fa-gas-pump">
+					  <span id="benzin" style="font-family: 'Poppins', sans-serif;">100%</span>
+					</i>
+				  </span>				  
+			  </div>
+
+		</div>
+		<!-- end new -->
+
+		
+	</div>
+	<!--help menu-->
+
+	<!--weapon widget-->
+	<div class="info weapon animated faster unarmed" id="weapon">
+		<div id="weapon_image">
+			<img src="img/weapons/pistol.png" alt="">
+		</div>
+
+		<div id="weapon_bullets">
+			<div id="weapon_clip" class="clip"><span>999</span></div>
+			<div id="weapon_ammo" class="ammo"><span>999</span></div>
+		</div>
+
+		<div class="icon" id="bullets">
+			<i><img src="img/weapon-bullets.png" alt=""></i>
+			<i class="clone"><img src="img/weapon-bullets.png" alt=""></i>
+			<span></span>
+		</div>
+	</div>
+
+	<!--microphone-->
+	<div class="left-bottom" id="leftBottom">
+		<div class="container">
+			<!--          <ul class="icons">
+          <li class="icon-1">
+                <div class="microphone" id="microphone" v-if="mic">
+
+                </div>
+            </li>
+        </ul>-->
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/b2e0cac130.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/cferdinandi/saferInnerHTML@1/dist/saferInnerHTML.polyfills.min.js"></script>
+	<script>
+			$("#motorstat").addClass("active");
+		const scaling = () => {
+			const defaultHeight = 1080;
+			const windowHeight = window.innerHeight;
+			const scalingCoeff = windowHeight / defaultHeight;
+
+			const speedo = document.querySelector('#infobuttons');
+			speedo.style.transform = `scale(${scalingCoeff})`;
+
+			
+
+		}
+
+		window.onload = () => {
+			scaling();
+		}
+		/*const help = document.querySelector('#rightBottom .bcontainer');
+		const helpContent = document.querySelector('#rightBottom .content');
+
+		help.addEventListener('click', (e) => {
+			help.classList.toggle('active');
+			helpContent.classList.toggle('hidden');
+		});*/
+		function DisplayMenu(toggle) {
+      if (toggle === true) {
+			$('#infobuttons').show();
+			$('#microphone').show();
+			$('.money-level-info').show();
+			$('.top-info_date').show();
+			$('.top-info_persons-id').show();
+			
+      } else {
+		$('#infobuttons').hide();
+			$('#microphone').hide();
+			$('.money-level-info').hide();
+			$('.top-info_date').hide();
+			$('.top-info_persons-id').hide();
+      }
+    }
+
+EnableSpeedo(false);
+
+    /*function EnableSpeedo(toggle) {
+      if (toggle === true) {
+			$('.info-speed-box').show();
+      } else {
+			$('.info-speed-box').hide();
+      }
+    }*/
+	
+		updateWeapon(false);
+
+		function updateWeapon(armed, weapon = 'knife') {
+			var weaponContainer = document.querySelector('#weapon');
+			var bulletsContainer = document.querySelector('#bullets');
+
+			if (armed === true) {
+
+				var oldWeapon = document.querySelector('#weapon_image img').src;
+				var newWeapon = 'img/weapons/' + weapon + '.png';
+				if (oldWeapon !== newWeapon) {
+					document.querySelector('#weapon_image img').src = newWeapon;
+				}
+
+				if (weaponContainer.classList.contains('armed') === false) {
+					weaponContainer.classList.remove('unarmed', 'fadeOut');
+					weaponContainer.classList.add('armed', 'fadeIn');
+				}
+
+			} else {
+
+				if (weaponContainer.classList.contains('unarmed') === false) {
+					weaponContainer.classList.remove('armed', 'fadeIn');
+					weaponContainer.classList.add('unarmed', 'fadeOut');
+				}
+
+			}
+		}
+		UpdateSpeed(230, 30);
+
+		
+
+		var current_hands = -1;
+		var current_bank = -1;
+
+		SetPlayerVoice(false);
+
+		/*
+	function SetPlayerVoice(active) {
+		if (active === false) {
+			document.getElementById('microphone').innerHTML = `<img v-if="mic" src="./hud/micoff.png" width="20px" height="40px">`;
+		} else {
+			document.getElementById('microphone').innerHTML = `<img v-if="mic" src="./hud/micon.png" width="20px" height="40px">`;
+		}
+	}
+*/
+
+		/*new*/
+		function SetPlayerVoice(active) {
+			if (active === false) {
+				document.getElementById('microphone').classList.remove('active');
+			} else {
+				document.getElementById('microphone').classList.add('active');
+
+			}
+		}
+		/*end new*/
+
+		function setplayeronline(count, max) {
+
+			//$("#online_players").text(count+" / "+max);
+			$("#online_players").html(count + " / <span class='total'>" + max + "</span>");
+
+		}
+
+		 DisplayMenu(true);
+		 function DisplayMenu(toggle)
+		 {
+		     if(toggle == true)
+		     {
+
+		         document.getElementById("child1").style.visibility = "visible";
+		         document.getElementById("child2").style.visibility = "visible";
+		         document.getElementById("car_km").style.visibility = "visible";
+		         document.getElementById("fuelContainer").style.visibility = "visible";
+		         document.querySelector('main').style.visibility = "visible"
+		     }
+		     else
+		     {
+		         document.getElementById("Head").style.visibility = "hidden";
+		         document.getElementById("child1").style.visibility = "hidden";
+		         document.getElementById("child2").style.visibility = "hidden";
+		         document.getElementById("car_km").style.visibility = "hidden";
+		         document.getElementById("fuelContainer").style.visibility = "hidden";
+		         document.querySelector('main').style.visibility = "hidden"
+		     }
+
+		 }
+
+		function DisplayMoney(toggle) {
+			if (toggle === true) {
+				document.getElementById("child2").style.visibility = "visible";
+			} else {
+				document.getElementById("child2").style.visibility = "hidden";
+			}
+
+		}
+		DisplayVeh(false);
+
+		function DisplayVeh(toggle) {
+			if (toggle === true) {
+				$('#info_speed_box').show();
+			} else {
+
+				$('#info_speed_box').hide();
+			}
+		}
+
+		function UpdateSpeed(speedValue, fuelValue, aracsaglik, enginestat, doorstat) {
+			var speedometerNumbers = document.querySelector('#speed-quantity');
+			var fuelNumber = $('#speed_amount');
+			
+			$("#hiz").text(speedValue);
+			$("#benzin").text(fuelValue);
+			$("#hasar").text(aracsaglik);
+		}
+
+		function updateclock(street, sokak, fps)
+		{
+			var options = { 
+				timeZone: 'Europe/Istanbul', 
+				hour12: false, 
+				hour: '2-digit', 
+				minute: '2-digit' 
+			};
+			var date = new Date().toLocaleString('tr-TR', options);
+			$("#saat").text(date);
+			$("#sehir").text(street);
+			$("#sokak").text(sokak);
+			$("#fps").text(" " + fps + " FPS");
+		}
+
+		function formatNumber(num) {
+			return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+		}
+
+		function DisplayGB(toggle) {
+			if (toggle === true) {
+				$('#guvenlibolge').show();
+			} else {
+				$('#guvenlibolge').hide();
+			}
+		}
+
+
+		function SetPlayerMoney(hands, bank) {
+
+			if (current_hands !== hands) {
+				$('#nakitpara').html('$' + formatNumber(hands));
+				current_hands = hands;
+			}
+
+			if (current_bank !== bank) {
+				$('#bankapara').html('$' + formatNumber(bank));
+				current_bank = bank;
+			}
+
+		}
+
+
+
+
+		// function SetPlayerCredits(credits) {
+		//   document.getElementById('on_credits').innerHTML = credits;
+		// }
+
+		/*  function SetPlayerTime(hour) {
+		    document.getElementById('hour').textContent = hour;
+		  }*/
+
+		// function SetPlayerWanted(level) {
+		//   document.getElementById("wanteds").innerHTML = "";
+
+		//   if (level == 0) {
+		//     return;
+		//   }
+
+		//   if (level <= 16) {
+		//     for (i = 0; i <= 15; i++) {
+		//       if (i < level) {
+		//         $("#wanteds").append("<span class='fa fa-star checked'></span>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//       } else {
+		//         $("#wanteds").append("<font color='#fff'<span class='fa fa-star'></span></font>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//       }
+		//     }
+		//   } else if (level <= 32) {
+		//     for (i = 0; i <= 31; i++) {
+		//       if (i < level) {
+		//         $("#wanteds").append("<span class='fa fa-star checked'></span>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+
+		//       } else {
+		//         $("#wanteds").append("<font color='#fff'<span class='fa fa-star'></span></font>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//       }
+		//     }
+		//   } else if (level <= 48) {
+		//     for (i = 0; i <= 47; i++) {
+		//       if (i < level) {
+		//         $("#wanteds").append("<span class='fa fa-star checked'></span>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//         if (i == 31) $("#wanteds").append("<br>");
+		//       } else {
+		//         $("#wanteds").append("<font color='#fff'<span class='fa fa-star'></span></font>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//         if (i == 31) $("#wanteds").append("<br>");
+		//       }
+		//     }
+		//   } else {
+		//     for (i = 0; i <= 63; i++) {
+		//       if (i < level) {
+		//         $("#wanteds").append("<span class='fa fa-star checked'></span>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//         if (i == 31) $("#wanteds").append("<br>");
+		//         if (i == 47) $("#wanteds").append("<br>");
+		//       } else {
+		//         $("#wanteds").append("<font color='#fff'<span class='fa fa-star'></span></font>");
+		//         if (i == 15) $("#wanteds").append("<br>");
+		//         if (i == 31) $("#wanteds").append("<br>");
+		//         if (i == 47) $("#wanteds").append("<br>");
+		//       }
+		//     }
+		//   }
+
+		// }
+	</script>
+</body>
+
+</html>

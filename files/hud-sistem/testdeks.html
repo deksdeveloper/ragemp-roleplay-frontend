@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oyun Kullanıcı Arayüzü</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            user-select: none;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+
+        .game-hud {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .vehicle-hud {
+            position: absolute;
+            right: 370px;
+            bottom: 10px;
+            display: none;
+            align-items: center;
+        }
+
+        .player-info {
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .player-name {
+            font-size: 16px;
+        }
+
+        .date {
+            font-size: 14px;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: rgba(0, 0, 0, 0.30);
+            padding: 5px 10px;
+            border-radius: 7px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .icon {
+            margin-right: 5px;
+        }
+
+        .health .icon {
+            color: #ff0000;
+        }
+
+        .armor .icon {
+            color: #dfdfdf;
+        }
+
+        .money .icon {
+            color: #00ff00;
+        }
+
+        .speed .icon {
+            color: #ff0000;
+        }
+
+        .damage .icon {
+            color: #dfdfdf;
+        }
+
+        .fuel .icon {
+            color: #c2e800;
+        }
+
+        .money-display {
+            position: absolute;
+            left: 310px;
+            bottom: 75px;
+            display: none;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .guvenli-display {
+            position: absolute;
+            left: 310px;
+            bottom: 107px;
+            display: none;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .money-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.30);
+            padding: 5px 10px;
+            border-radius: 7px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .money-item .icon {
+            color: #00ff00;
+            margin-right: 8px;
+        }
+
+        .bank-money .icon {
+            color: #00ff00;
+        }
+
+        .ammo-display {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: none;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .ammo-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.30);
+            padding: 5px 10px;
+            border-radius: 7px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .ammo-item .icon {
+            margin-right: 8px;
+            color: #ff6b00;
+        }
+
+        .location-display {
+            position: absolute;
+            left: 310px;
+            bottom: 15px;
+            background-color: rgba(0, 0, 0, 0.30);
+            padding: 10px 15px;
+            border-radius: 7px;
+            color: white;
+            text-align: left;
+            display: none;
+        }
+
+        .location-main {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .location-sub {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="ammo-display" id="ammoHUD">
+        <div class="ammo-item">
+            <div class="icon"><i class="fa-solid fa-gun"></i></div>
+            <div class="value" id="ammoValue">30/30 M</div>
+        </div>
+    </div>
+
+    <div class="money-display" id="moneyHUD">
+        <div class="money-item cash-money">
+            <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+            <div class="value" id="cashValue">$25,430</div>
+        </div>
+        <div class="money-item bank-money">
+            <div class="icon"><i class="fas fa-university"></i></div>
+            <div class="value" id="bankValue">$185,750</div>
+        </div>
+    </div>
+
+    <div class="location-display" id="locationHUD">
+        <div class="location-main" id="locationMain">ÜST KONUM</div>
+        <div class="location-sub" id="locationSub">ALT KONUM</div>
+    </div>
+
+    <div class="guvenli-display" id="guvenliHUD">
+        <div class="money-item cash-money">
+            <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="value">GÜVENLİ BÖLGE</div>
+        </div>
+    </div>
+
+
+    <div class="game-hud" id="playerHUD">
+        <div class="player-info">
+            <div class="player-name" id="playerName">NIVA TEST [0]</div>
+            <div class="date" id="gameDate">29/5/2025, 11:50</div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item health">
+                <div class="icon"><i class="fas fa-heart"></i></div>
+                <div class="value" id="healthValue">CAN: 61</div>
+            </div>
+
+            <div class="status-item armor">
+                <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="value" id="armorValue">ZIRH: 100</div>
+            </div>
+
+            <div class="status-item money">
+                <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="value" id="paydayValue">PAYDAY: 1/60</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="vehicle-hud" id="vehicleHUD">
+        <div class="status-bar">
+            <div class="status-item speed">
+                <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
+                <div class="value" id="speedValue">HIZ: 300 KM/H</div>
+            </div>
+
+            <div class="status-item damage">
+                <div class="icon"><i class="fa-solid fa-gears"></i></div>
+                <div class="value" id="damageValue">HASAR: 100</div>
+            </div>
+
+            <div class="status-item fuel">
+                <div class="icon"><i class="fas fa-gas-pump"></i></div>
+                <div class="value" id="fuelValue">BENZIN: 100</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let hudState = {
+            ammo: false,
+            money: false,
+            player: false,
+            vehicle: false,
+            guvenli: false,
+            location: false
+        };
+
+        function toggleAmmo(status) {
+            hudState.ammo = status;
+            const ammoHUD = document.getElementById('ammoHUD');
+            
+            ammoHUD.style.display = hudState.ammo ? 'flex' : 'none';
+        }
+
+        function toggleMoney(status) {
+            hudState.money = status;
+            const moneyHUD = document.getElementById('moneyHUD');
+            
+            moneyHUD.style.display = hudState.money ? 'flex' : 'none';
+        }
+
+        function toggleGuvenli(status) {
+            hudState.guvenli = status;
+            const guvenliHUD = document.getElementById('guvenliHUD');
+            
+            guvenliHUD.style.display = hudState.guvenli ? 'flex' : 'none';
+        }
+
+        function togglePlayer(status) {
+            hudState.player = status;
+            const playerHUD = document.getElementById('playerHUD');
+            playerHUD.style.display = hudState.player ? 'flex' : 'none';
+        }
+
+        function toggleVehicle(status) {
+            hudState.vehicle = status;
+            const vehicleHUD = document.getElementById('vehicleHUD');
+            vehicleHUD.style.display = hudState.vehicle ? 'flex' : 'none';
+        }
+
+        function toggleLocation(status) {
+            hudState.location = status;
+            const locationHUD = document.getElementById('locationHUD');
+            locationHUD.style.display = hudState.location ? 'block' : 'none';
+        }
+
+        function updateAmmo(current, max, type = 'M') {
+            document.getElementById('ammoValue').textContent = `${current}/${max} ${type}`;
+        }
+
+        function updateCash(amount, currency = '$') {
+            document.getElementById('cashValue').textContent = `${currency}${amount.toLocaleString()}`;
+        }
+
+        function updateBank(amount, currency = '$') {
+            document.getElementById('bankValue').textContent = `${currency}${amount.toLocaleString()}`;
+        }
+
+        function updateLocation(main, sub) {
+            document.getElementById('locationMain').textContent = main;
+            document.getElementById('locationSub').textContent = sub;
+        }
+
+        function updatePlayerName(name) {
+            document.getElementById('playerName').textContent = `${name}`;
+        }
+
+        function updateDate(date) {
+            document.getElementById('gameDate').textContent = date;
+        }
+
+        function updateHealth(health) {
+            document.getElementById('healthValue').textContent = `CAN: ${health}`;
+        }
+
+        function updateArmor(armor) {
+            document.getElementById('armorValue').textContent = `ZIRH: ${armor}`;
+        }
+
+        function updatePayday(current) {
+
+            document.getElementById('paydayValue').textContent = `PAYDAY: ${current}/60`;
+        }
+
+        function updateSpeed(speed) {
+            document.getElementById('speedValue').textContent = `HIZ: ${speed} KM/H`;
+        }
+
+        function updateDamage(damage) {
+            document.getElementById('damageValue').textContent = `HASAR: ${damage}`;
+        }
+
+        function updateFuel(fuel) {
+            document.getElementById('fuelValue').textContent = `BENZIN: ${fuel}`;
+        }
+
+        window.HUD = {
+            toggleAmmo: toggleAmmo,
+            toggleMoney: toggleMoney,
+            togglePlayer: togglePlayer,
+            toggleVehicle: toggleVehicle,
+            toggleLocation: toggleLocation,
+            
+            updateAmmo: updateAmmo,
+            updateCash: updateCash,
+            updateBank: updateBank,
+            updateLocation: updateLocation,
+            updatePlayerName: updatePlayerName,
+            updateDate: updateDate,
+            updateHealth: updateHealth,
+            updateArmor: updateArmor,
+            updatePayday: updatePayday,
+            updateSpeed: updateSpeed,
+            updateDamage: updateDamage,
+            updateFuel: updateFuel,
+            
+            getState: () => ({ ...hudState })
+        };
+    </script>
+</body>
+</html>

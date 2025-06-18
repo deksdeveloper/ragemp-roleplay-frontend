@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giysi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            padding-right: 50px;
+        }
+
+        .menu-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .menu {
+            width: 400px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+
+        .header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            height: auto;
+            margin-bottom: 5px;
+            display: none;
+        }
+
+        .select-item {
+            position: relative;
+            animation: fadeIn 0.3s ease forwards;
+            transition: all 0.2s ease;
+            display: none;
+            width: 100%;
+        }
+
+        .select-item.active {
+            display: block;
+        }
+        
+        .item-info {
+            text-align: center;
+            padding: 20px 15px;
+            margin-bottom: 15px;
+        }
+        
+        .item-name {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .item-price {
+            color: #3498db;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .slider-container {
+            padding: 0 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #2a2a2a;
+            outline: none;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.2);
+        }
+
+        .slider::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.3);
+            background: #2980b9;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: grab;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.2);
+        }
+
+        .slider::-moz-range-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.3);
+            background: #2980b9;
+        }
+
+        .key-hints {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 10px;
+            color: #777;
+            font-size: 11px;
+        }
+
+        .key-hint {
+            display: flex;
+            align-items: center;
+        }
+
+        .key {
+            background: #2a2a2a;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-right: 5px;
+            border: 1px solid #333;
+            font-weight: 600;
+            font-size: 10px;
+        }
+
+        .select-item .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .select-item .row:last-child {
+            margin-bottom: 0;
+        }
+
+        .select-item .name {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .select-item .price {
+            color: #3498db;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .texture-selector {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .switcher {
+            display: flex;
+            align-items: center;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 20px;
+            padding: 4px 10px;
+            border: 1px solid #2a2a2a;
+            max-width: 280px;
+        }
+
+        .arrow {
+            cursor: pointer;
+            min-width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 50%;
+            transition: all 0.2s;
+            margin: 0 2px;
+            flex-shrink: 0;
+        }
+
+        .arrow:hover {
+            background: rgba(52, 152, 219, 0.4);
+        }
+
+        .arrow .icon {
+            width: 10px;
+            height: 10px;
+            fill: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .types {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            margin: 0 8px;
+            overflow: hidden;
+            position: relative;
+            max-width: 200px;
+        }
+
+        .type {
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            margin: 0 3px;
+            flex-shrink: 0;
+        }
+
+        .type.active {
+            background: #3498db;
+        }
+
+        .texture-label {
+            color: #888;
+            font-size: 11px;
+            margin-right: 8px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        
+        .texture-counter {
+            color: #888;
+            font-size: 11px;
+            margin-left: 8px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .buttons {
+            padding: 0 20px 20px 20px;
+        }
+
+        .buttons .row {
+            margin-bottom: 10px;
+        }
+
+        .buttons .row:last-child {
+            margin-bottom: 0;
+        }
+
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button.accept {
+            background: #2ecc71;
+        }
+
+        .button.accept:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .button.decline {
+            background: #e74c3c;
+        }
+
+        .button.decline:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .select-item:nth-child(1) { animation-delay: 0.05s; }
+        .select-item:nth-child(2) { animation-delay: 0.1s; }
+        .select-item:nth-child(3) { animation-delay: 0.15s; }
+        .select-item:nth-child(4) { animation-delay: 0.2s; }
+        .select-item:nth-child(5) { animation-delay: 0.25s; }
+        .select-item:nth-child(6) { animation-delay: 0.3s; }
+        .select-item:nth-child(7) { animation-delay: 0.35s; }
+        .select-item:nth-child(8) { animation-delay: 0.4s; }
+
+        @media (max-width: 768px) {
+            .menu {
+                width: 85%;
+                max-width: 350px;
+            }
+            
+            body {
+                justify-content: center;
+                padding-right: 0;
+            }
+        }
+        
+        .item-counter {
+            text-align: center;
+            margin-top: 5px;
+            color: #777;
+            font-size: 12px;
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-wrapper">
+        <div class="menu" id="menu">
+            <div class="container">
+                <div class="panel-header">
+                    <h2>KIYAFET DÜKKANI</h2>
+                    <p>Kıyafetleri inceleyin ve satın alın</p>
+                </div>
+                        
+                <div class="item-info" id="item-info">
+                </div>
+                
+                <div class="slider-container">
+                    <input type="range" min="1" max="1" value="1" class="slider" id="item-slider">
+                </div>
+                
+                <div class="key-hints">
+                    <div class="key-hint">
+                        <div class="key">A</div>
+                        <span>Önceki</span>
+                    </div>
+                    <div class="key-hint">
+                        <div class="key">D</div>
+                        <span>Sonraki</span>
+                    </div>
+                </div>
+                
+                <div class="item-counter" id="counter">1/1</div>
+                
+                <div class="texture-selector">
+                    <span class="texture-label">TEXTURE:</span>
+                    <div class="switcher">
+                        <div class="arrow left" id="texture-left">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.5 20">
+                                    <path d="M.415 10.99l8.674 8.6a1.412 1.4 0 1 0 1.998-1.98l-7.675-7.61 7.674-7.609a1.413 1.401 0 0 0-1.998-1.981l-8.674 8.6a1.412 1.4 0 0 0 0 1.98z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="types" id="texture-types">
+                        </div>
+                        <div class="arrow right" id="texture-right">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.5 20">
+                                    <path d="M11.085 10.99l-8.674 8.6a1.412 1.4 0 1 1-1.998-1.98l7.675-7.61-7.674-7.609a1.413 1.401 0 0 1 1.998-1.981l8.674 8.6a1.412 1.4 0 0 1 0 1.98z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="texture-counter" id="texture-counter">1/1</span>
+                </div>
+                
+                <div class="buttons">
+                    <div class="row">
+                        <div onclick="buycloth()" class="button accept">Satın Al</div>
+                    </div>
+                    <div class="row">
+                        <div onclick="backtomainmenu()" class="button decline">Geri</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../css/jquery.js"></script>
+    <script>
+    function backtomainmenu() {
+        mp.trigger("BackToMainClothMenu");
+    }
+
+    let items = [];
+    let activeIndex = 0;
+    let activeTypeIndex = 0;
+    let cloths;
+    let slider;
+    
+    function LoadList(data) {
+        cloths = JSON.parse(data);
+        
+        if (cloths.length > 0) {
+            activeIndex = 0;
+            
+            slider = document.getElementById('item-slider');
+            slider.min = 1;
+            slider.max = cloths.length;
+            slider.value = 1;
+            
+            slider.addEventListener('input', function() {
+                const newIndex = parseInt(this.value) - 1;
+                if (newIndex !== activeIndex) {
+                    changeActiveItem(newIndex);
+                }
+            });
+            
+            updateItemInfo();
+            updateCounter();
+            updateTextures();
+            
+            document.getElementById('texture-left').addEventListener('click', function() {
+                changeTextureIndex(-1);
+            });
+            
+            document.getElementById('texture-right').addEventListener('click', function() {
+                changeTextureIndex(1);
+            });
+            
+            if (cloths.length > 0) {
+                mp.trigger("Preview_Clothes", cloths[activeIndex].id, cloths[activeIndex].clothe_Id, activeTypeIndex);
+            }
+        }
+    }
+    
+    function updateItemInfo() {
+        if (!cloths || cloths.length === 0) return;
+        
+        const infoContainer = document.getElementById('item-info');
+        const item = cloths[activeIndex];
+        
+        infoContainer.innerHTML = `
+            <div class="item-name">${item.clothe_class} #${item.clothe_Id}</div>
+            <div class="item-price">${item.price}</div>
+        `;
+    }
+    
+    function changeActiveItem(newIndex) {
+        if (newIndex >= 0 && newIndex < cloths.length) {
+            activeIndex = newIndex;
+            activeTypeIndex = 0;
+            
+            if (parseInt(slider.value) !== activeIndex + 1) {
+                slider.value = activeIndex + 1;
+            }
+            
+            updateItemInfo();
+            updateCounter();
+            updateTextures();
+            mp.trigger("Preview_Clothes", cloths[activeIndex].id, cloths[activeIndex].clothe_Id, activeTypeIndex);
+        }
+    }
+    
+    function nextItem() {
+        changeActiveItem(activeIndex + 1);
+    }
+    
+    function prevItem() {
+        changeActiveItem(activeIndex - 1);
+    }
+    
+    function updateTextures() {
+        if (!cloths || cloths.length === 0) return;
+        
+        const textureCount = Math.max(1, cloths[activeIndex].clothe_Texture);
+        const textureContainer = document.getElementById('texture-types');
+        textureContainer.innerHTML = '';
+    
+        const maxVisibleDots = 10;
+        const dotsToShow = Math.min(textureCount, maxVisibleDots);
+        
+        let startOffset = 0;
+        if (textureCount > maxVisibleDots) {
+            if (activeTypeIndex >= maxVisibleDots - 2) {
+                startOffset = Math.min(activeTypeIndex - Math.floor(maxVisibleDots/2), textureCount - maxVisibleDots);
+            }
+        }
+        
+        for (let i = startOffset; i < startOffset + dotsToShow; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'type' + (i === activeTypeIndex ? ' active' : '');
+            textureContainer.appendChild(dot);
+        }
+        
+        updateTextureCounter();
+    }
+    
+    function updateTextureCounter() {
+        const counterElem = document.getElementById('texture-counter');
+        if (!cloths || cloths.length === 0) return;
+        
+        const textureCount = Math.max(1, cloths[activeIndex].clothe_Texture);
+        counterElem.textContent = `${activeTypeIndex + 1}/${textureCount}`;
+    }
+    
+    function changeTextureIndex(direction) {
+        if (!cloths || cloths.length === 0) return;
+        
+        const textureCount = Math.max(1, cloths[activeIndex].clothe_Texture);
+        let newIndex = activeTypeIndex + direction;
+        
+        if (newIndex < 0) newIndex = textureCount - 1;
+        if (newIndex >= textureCount) newIndex = 0;
+        
+        if (newIndex !== activeTypeIndex) {
+            activeTypeIndex = newIndex;
+            
+            updateTextures();
+            
+            mp.trigger("Preview_Clothes", cloths[activeIndex].id, cloths[activeIndex].clothe_Id, activeTypeIndex);
+        }
+    }
+    
+    function updateCounter() {
+        const counterElem = document.getElementById('counter');
+        if (counterElem) {
+            counterElem.textContent = `${activeIndex + 1}/${cloths.length}`;
+        }
+    }
+    
+    function buycloth() {
+        if (cloths && cloths.length > 0) {
+            mp.trigger("Buy_Clothes", cloths[activeIndex].id, cloths[activeIndex].clothe_Id, activeTypeIndex, cloths[activeIndex].price);
+        }
+    }
+
+    const press = (e) => {
+        switch (e.keyCode) {
+            case 65:
+                e.preventDefault();
+                prevItem();
+                break;
+            case 68:
+                e.preventDefault();
+                nextItem();
+                break;
+            case 38:
+                e.preventDefault();
+                changeTextureIndex(-1);
+                break;
+            case 40:
+                e.preventDefault();
+                changeTextureIndex(1);
+                break;
+        }
+    }
+
+    document.onkeydown = press;
+    </script>    
+</body>
+</html>

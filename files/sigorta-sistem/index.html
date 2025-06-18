@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Puan Satın Al</title>
+    <meta name="description" content="Modernize Edilmiş Puan Satın Alma Sayfası">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .panel-container {
+            width: 400px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #007A96, #005f7a);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .form-container {
+            padding: 25px 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .points-button {
+            position: relative;
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(135deg, #151515, #222);
+            letter-spacing: 0.5px;
+            border: 1px solid #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .points-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .points-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+            border-color: #007A96;
+        }
+        
+        .points-button:hover::before {
+            left: 100%;
+        }
+
+        .points-button:active {
+            transform: translateY(0);
+        }
+
+        .point-amount {
+            display: flex;
+            align-items: center;
+            color: #00a0fc;
+            font-weight: 700;
+        }
+        
+        .point-amount::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #00a0fc, #0080d8);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 10px rgba(0, 160, 252, 0.5);
+        }
+
+        .price {
+            color: #00ff47;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .points-button:nth-child(1) { animation-delay: 0.1s; }
+        .points-button:nth-child(2) { animation-delay: 0.2s; }
+        .points-button:nth-child(3) { animation-delay: 0.3s; }
+
+        @media (max-width: 768px) {
+            .panel-container {
+                width: 85%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel-container">
+        <div class="panel-header">
+            <h2>Sigorta Satın Al</h2>
+            <p>İstediğiniz sigorta paketini seçin</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="button-container">
+                <button class="points-button" onclick="buy(0)">
+                    <span class="point-amount">100 SAATLİK SİGORTA</span>
+                    <span class="price">$3.000</span>
+                </button>
+                
+                <button class="points-button" onclick="buy(1)">
+                    <span class="point-amount">300 SAATLİK SİGORTA</span>
+                    <span class="price">$7.000</span>
+                </button>
+                
+                <button class="points-button" onclick="buy(2)">
+                    <span class="point-amount">720 SAATLİK SİGORTA</span>
+                    <span class="price">$15.000</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/index.js"></script>
+    <script src="./js/library/jquery-3.2.1.min.js"></script>
+</body>
+</html>

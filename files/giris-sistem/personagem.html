@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Karakter Oluşturma Paneli</title>
+    <meta name="description" content="Karakter Oluşturma Paneli">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            height: 100vh;
+            overflow: hidden;
+            /* Düzenlendi - display flex kaldırıldı */
+        }
+
+        .create-char {
+            width: 450px;
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            position: fixed; /* Düzenlendi - absolute yerine fixed */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease;
+            color: #fff;
+            left: 50px; /* Düzenlendi - sağ yerine sol kenardan konumlandırma */
+            top: 50%; /* Düzenlendi - ortalama için */
+            transform: translateY(-50%); /* Düzenlendi - Y ekseninde ortalama */
+            z-index: 1000; /* Düzenlendi - z-index eklendi */
+        }
+
+        .panel-header {
+            background: rgba(17, 17, 17, 0.98);
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+        
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .panel-header h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header p {
+            color: #888;
+            font-size: 12px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .content-section {
+            padding: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input {
+            flex: 1;
+        }
+
+        .input input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid #222;
+            background: #151515;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .input input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .input input::placeholder {
+            color: #666;
+        }
+
+        .select-container {
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-align: center;
+            display: block;
+        }
+
+        .select-gender {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-dark {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .button-dark:hover {
+            background: #34495e;
+        }
+
+        .button-yellow {
+            background: #2980b9;
+            color: white;
+        }
+
+        .button-yellow:hover {
+            background: #3498db;
+        }
+
+        .gender.active {
+            background: #3498db;
+        }
+
+        .slider-container {
+            margin-bottom: 18px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .setting-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #eee;
+        }
+
+        .slider-value, .badge {
+            background: rgba(20, 20, 20, 0.8);
+            color: #3498db;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge i {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .slider {
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .ui.range {
+            height: 6px;
+            width: 100%;
+            position: relative;
+            padding: 0 9px; /* Eklendi - kenar boşluğu ile çizgiyi içeri alır */
+            box-sizing: border-box; /* Eklendi - padding'in genişliği etkilememesi için */
+        }
+
+        .ui.range .inner {
+            height: 6px;
+            background: linear-gradient(90deg, #2980b9, #3498db);
+            border-radius: 3px;
+            position: relative; /* Eklendi - iç pozisyonlama için */
+        }
+
+        .ui.range .thumb {
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .step-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .step-buttons .button {
+            flex: 1;
+        }
+
+        .camera {
+            position: fixed;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-350%);
+            background: rgba(17, 17, 17, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 220px;
+            z-index: 100;
+        }
+
+        .camera-title {
+            display: block;
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .camera-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .camera-buttons .button {
+            font-size: 12px;
+            padding: 8px 12px;
+        }
+
+        .rotate {
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slider-container {
+            animation: fadeIn 0.3s ease forwards;
+        }
+        
+        .slider-container:nth-child(1) { animation-delay: 0.05s; }
+        .slider-container:nth-child(2) { animation-delay: 0.1s; }
+        .slider-container:nth-child(3) { animation-delay: 0.15s; }
+        .slider-container:nth-child(4) { animation-delay: 0.2s; }
+        .slider-container:nth-child(5) { animation-delay: 0.25s; }
+        .slider-container:nth-child(6) { animation-delay: 0.3s; }
+        .slider-container:nth-child(7) { animation-delay: 0.35s; }
+        .slider-container:nth-child(8) { animation-delay: 0.4s; }
+        .slider-container:nth-child(9) { animation-delay: 0.45s; }
+        .slider-container:nth-child(10) { animation-delay: 0.5s; }
+    </style>
+</head>
+
+<body class="create">
+    <div class="create-char">
+        <div class="panel-header">
+            <h2>Karakter Oluştur</h2>
+            <p>Karakterinizi özelleştirin</p>
+        </div>
+
+        <div class="content-section">
+            <form class="ui form">
+                <div class="input-container">
+                    <div class="input">
+                        <input type="text" placeholder="İsim" id="creation_forename">
+                    </div>
+                    <div class="input">
+                        <input type="text" placeholder="Soyisim" id="creation_surname">
+                    </div>
+                </div>
+
+                <div class="select-container">
+                    <span class="step-title">Cinsiyet</span>
+                    <div class="select-gender" id="creation_gender">
+                        <input type="hidden" name="gender" id="gender-value">
+                        <div class="button button-dark gender gender_male" data-value="1">Erkek</div>
+                        <div class="button button-dark gender gender_female" data-value="0">Kadın</div>
+                    </div>
+                    <div class="input-container" style="max-width: 150px; margin: 0 auto;">
+                        <div class="input">
+                            <input name="age" style="text-align:center;" type="number" placeholder="Yaş" id="creation_age">
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Baba</span>
+                    <span class="slider-value" id="display-base">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_base"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Anne</span>
+                    <span class="slider-value" id="display-base2">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_base2"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Benzerlik</span>
+                    <span class="badge">
+                        <i class="fa fa-angle-left"></i>
+                        Anne - Baba
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_baseblend"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Cilt Rengi</span>
+                    <span class="badge">
+                        <i class="fa fa-angle-left"></i>
+                        Açık - Koyu
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_skin"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Göz Rengi</span>
+                    <span class="slider-value" id="display-eyes">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_eyes"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Saç</span>
+                    <span class="slider-value" id="display-hair">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_hair"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Saç Rengi</span>
+                    <span class="slider-value" id="display-haircolor">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_haircolor"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Saç Aydınlatması</span>
+                    <span class="slider-value" id="display-haircolor2">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_haircolor2"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Kaşlar</span>
+                    <span class="slider-value" id="display-eyebrows">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_eyebrows"></div>
+                </div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span class="setting-name">Sakal</span>
+                    <span class="slider-value" id="display-beard">1</span>
+                </div>
+                <div class="slider">
+                    <div class="ui range" id="range_beard"></div>
+                </div>
+            </div>
+
+            <div class="step-buttons">
+                <div class="button button-dark" id="charcreation_back"><i class="fas fa-sign-out-alt" style="transform: rotate(180deg); margin-right: 5px;"></i> Geri</div>
+                <div class="button button-yellow" id="charcreation_next">İleri <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="camera">
+        <span class="camera-title">Kamera Kontrolü</span>
+        <div class="camera-buttons">
+            <div class="button button-dark" id="charcreation_head"><i class="fas fa-user" style="margin-right: 30px;"></i> Yüz</div>
+            <div class="button button-dark" id="charcreation_body"><i class="fas fa-male" style="margin-right: 30px;"></i> Vücut</div>
+        </div>
+        <span class="camera-title rotate">Döndür</span>
+        <div class="ui range" id="range_rotation"></div>
+    </div>
+
+    <script src="../css/jquery.js"></script>
+    <script src="css/range.js"></script>
+    <script src="../css/semantic.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.ui.range').each(function() {
+                    if($(this).range('get value') == $(this).range('get min')) {
+                        $(this).find('.thumb').css('left', '9px');
+                    }
+                });
+            }, 200);
+        });
+    
+        $('.select-gender .gender').click(function (val, data) {
+            $('.gender.active').removeClass('active');
+            $(this).addClass('active');
+            $(this).parents('.select-gender').find('input').attr('value', $(this).attr('data-value'));
+            var genderVal = document.getElementById('gender-value').value
+            OnRangeChange("range_gender", genderVal, data)
+        });
+        
+        $('.camera-buttons .button').click(function() {
+            $('.camera-buttons .button.active').removeClass('active');
+            $(this).addClass('active');
+        })
+        
+        $(document).ready(function () {
+            $('.ui.form').form({
+                fields: {
+                    firstname: {
+                        identifier: 'first-name',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'İsim giriniz!'
+                        }]
+                    },
+                    lastname: {
+                        identifier: 'last-name',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Soyad giriniz!'
+                        }]
+                    },
+                    age: {
+                        identifier: 'age',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Yaş giriniz!'
+                        }]
+                    },
+                    sex: {
+                        identifier: 'gender',
+                        rules: [{
+                            type: 'minCount[1]',
+                            prompt: 'Cinsiyet seçiniz!'
+                        }]
+                    }
+                }
+            });
+
+            $("#charcreation_back").click(function () {
+                mp.trigger("ClientCharCreationBack");
+            });
+
+            $("#charcreation_next").click(function () {
+                if($("#creation_age").val() == null) {
+                    $("#creation_age").val(18);
+                }
+                mp.trigger("ClientCharCreationNext", $("#creation_forename").val(), $("#creation_surname").val(), $("#creation_age").val());
+            });
+
+            $("#charcreation_head").click(function () {
+                mp.trigger("cameraPointTo", 1);
+            });
+
+            $("#charcreation_body").click(function () {
+                mp.trigger("cameraPointTo", 0);
+            });
+        });
+        
+        function LoadNewCharacter(arr_data) {
+            let data = JSON.parse(arr_data);
+            $("#creation_forename").val(data[0].Forename);
+            $("#creation_surname").val(data[0].Surname);
+            $('#gender-value').val(data[0].Gender);
+
+            const rangeConfig = {
+                smooth: false,
+                onDrag: function(value, meta) {
+                    const $range = $(this);
+                    setTimeout(function() {
+                        $range.find('.thumb').css('left', '9px');
+                    }, 10);
+                }
+            };
+
+            $('#range_base').range({
+                min: 0,
+                max: 22,
+                start: data[0].Base,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_base", val, data), $('#display-base').html(val)
+                }
+            });
+            $('#range_base2').range({
+                min: 0,
+                max: 24,
+                start: data[0].Base2,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_base2", val, data), $('#display-base2').html(val)
+                }
+            });
+            $('#range_baseblend').range({
+                min: 0,
+                max: 9,
+                start: data[0].BaseBlend,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_baseblend", val, data)
+                }
+            });
+            $('#range_skin').range({
+                min: 0,
+                max: 9,
+                start: data[0].Skin,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_skin", val, data), $('#display-skin').html(val)
+                }
+            });
+            $('#range_eyes').range({
+                min: 0,
+                max: 6,
+                start: data[0].Eyes,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_eyes", val, data), $('#display-eyes').html(val)
+                }
+            });
+            $('#range_hair').range({
+                min: 0,
+                max: 72,
+                start: data[0].Hair,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_hair", val, data), $('#display-hair').html(val)
+                }
+            });
+            $('#range_haircolor').range({
+                min: 0,
+                max: 63,
+                start: data[0].HairColor,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_haircolor", val, data), $('#display-haircolor').html(val)
+                }
+            });
+            $('#range_haircolor2').range({
+                min: 0,
+                max: 63,
+                start: data[0].HairHighlightColor,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_haircolor2", val, data), $('#display-haircolor2').html(val)
+                }
+            });
+            $('#range_eyebrows').range({
+                min: 0,
+                max: 31,
+                start: data[0].Eyebrows,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_eyebrows", val, data), $('#display-eyebrows').html(val)
+                }
+            });
+            $('#range_beard').range({
+                min: 0,
+                max: 28,
+                start: data[0].Beard,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_beard", val, data), $('#display-beard').html(val)
+                }
+            });
+            $('#range_rotation').range({
+                min: 0,
+                max: 360,
+                start: 100,
+                step: 20,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_rotation", val, data)
+                }
+            });
+            $('#range_elevation').range({
+                min: -2,
+                max: 1,
+                start: 0,
+                step: 1,
+                smooth: false,
+                onChange: function (val, data) {
+                    OnRangeChange("range_elevation", val, null)
+                }
+            });
+            
+            setTimeout(function() {
+                $('.ui.range').each(function() {
+                    const val = $(this).range('get value');
+                    const min = $(this).range('get min');
+                    const max = $(this).range('get max');
+                    
+                    if(val === min) {
+                        $(this).find('.thumb').css('left', '9px'); 
+                    }
+                });
+            }, 100);
+        }
+
+        function OnRangeChange(id, val, data) {
+            console.log(id, val);
+            mp.trigger("ClientOnRangeChange", id, val);
+        }
+
+		setTimeout(function() {
+                $('.ui.range').each(function() {
+                    if($(this).range('get value') == $(this).range('get min')) {
+                        $(this).find('.thumb').css('left', '9px');
+                    }
+                });
+            }, 200);
+    </script>
+</body>
+</html>

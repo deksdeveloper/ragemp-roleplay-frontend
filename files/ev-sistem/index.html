@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA-MP Tarzı Dialog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            
+            margin: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        .dialog {
+            background: #1c1c1c;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 350px;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .dialog h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .dialog p {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Yeni düzenlemeler: İşlem ve Değer */
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .option-header span {
+            display: inline-block;
+        }
+
+        .option-header .option-name {
+            margin-right: 20px; /* İşlem ve Değer arasına mesafe */
+        }
+
+        /* Satır butonları */
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 12px;
+            background-color: #333;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .row:hover {
+            background-color: #444;
+        }
+
+        .row.selected {
+            background-color: #555; /* Seçilen satır için daha açık ton */
+        }
+
+        .row span {
+            display: inline-block;
+        }
+
+        .buttons {
+            margin-top: 15px;
+        }
+
+        .btn {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .btn.confirm {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn.confirm:hover {
+            background: #45a049;
+        }
+
+        .btn.cancel {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn.cancel:hover {
+            background: #d32f2f;
+        }
+
+        /* Açıkken görünen stiller */
+        .overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .overlay.active .dialog {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay active" id="confirmationDialog">
+        <div class="dialog">
+            <h2>Ev Yönetim Paneli</h2>
+
+            <!-- Yeni düzenleme: İşlem ve Değer -->
+            <div class="option-header">
+                <span class="option-name">İşlem</span>
+                <span class="option-value">Değer</span>
+            </div>
+
+            <!-- Satır butonları -->
+            <div class="row" data-value="1">
+                <span>Kilit</span><span>Kilitli</span>
+            </div>
+            <div class="row" data-value="2">
+                <span>Ev İnterior</span><span>1</span>
+            </div>
+
+            <div class="buttons">
+                <button class="btn confirm">Seç</button>
+                <button class="btn cancel">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedOption = null;
+        let lastClickedOption = null;
+        let lastClickTime = 0;
+        let evid = -1;
+
+        const rows = document.querySelectorAll('.row');
+        const confirmButton = document.querySelector('.confirm');
+        const cancelButton = document.querySelector('.cancel');
+
+        function EvPanel(id) {
+            evid = id;
+        }
+
+        rows.forEach(row => {
+            row.addEventListener('click', function() {
+                const now = new Date().getTime();
+
+                if (lastClickedOption === this && (now - lastClickTime) < 500) {
+                    // İkinci kez tıklanınca seçimi onayla
+                    mp.trigger("evpanel", this.dataset.value, evid);
+                    return;
+                }
+
+                // Seçimi işaretle ama hemen işlem yapma
+                if (selectedOption) {
+                    selectedOption.classList.remove('selected');
+                }
+                this.classList.add('selected');
+                selectedOption = this;
+
+                lastClickedOption = this;
+                lastClickTime = now;
+            });
+        });
+
+        // "Seç" butonuna tıklama (onayla)
+        confirmButton.addEventListener('click', function() {
+            if (selectedOption) {
+                mp.trigger("evpanel", selectedOption.dataset.value, evid);
+            }
+        });
+
+        // "İptal" butonuna tıklama
+        cancelButton.addEventListener('click', function() {
+            mp.trigger("evpanel", 0, evid);
+        });
+    </script>
+
+</body>
+</html>
