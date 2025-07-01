@@ -7,7 +7,6 @@ require('./files/new_voip.js');
 require('./files/heli.js');
 require('./files/VehicleSync.js');
 require('./files/heli2.js');
-require('./draw-zone');
 
 
 const localPlayer = mp.players.local;
